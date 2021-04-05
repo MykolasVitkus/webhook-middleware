@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  app:
+    image: node:latest
+    entrypoint: 'tail -f /dev/null'
+    working_dir: /app
+    volumes:
+      - ./:/app:rw,cached
+    networks:
+      - dev_net
+
+networks:
+  dev_net:
+    external: true

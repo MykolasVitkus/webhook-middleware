@@ -1,0 +1,49 @@
+
+$shadeColor: #3e4148;
+$textColor: rgb(178, 185, 191);
+$activeNavItem: rgba(#fff, .1);
+
+.navigation {
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    background-color: #414755;
+    position: fixed;
+    width: 250px;
+    // border-right: 1px solid $shadeColor;
+    height: 100%;
+  }
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    border-bottom: 1px solid $shadeColor;
+}
+
+.logoImage {
+    height: 50px;
+}
+
+.navItem {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $shadeColor;
+    height: 40px;
+    padding-left: 16px;
+    &:hover {
+        background-color: $activeNavItem;
+    }
+    &Active {
+        @extend .navItem;
+        background-color: $activeNavItem;
+    }
+}
+
+.navItem_icon {
+    color: $textColor;
+    margin-right: 6px;
+}

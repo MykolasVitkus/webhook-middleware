@@ -1,0 +1,14 @@
+@import '../../globals.module.scss';
+
+.button {
+    padding-left: 18px;
+    padding-right: 18px;
+    height: 32px;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    border: 1px solid #323743;
+    border-radius: 5%;
+    outline: none;
+    color: $primText;
+}
