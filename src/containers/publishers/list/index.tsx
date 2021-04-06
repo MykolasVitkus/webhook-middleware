@@ -6,13 +6,14 @@ import { publishers } from '../../../store/publishers';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaEdit, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { getPublishersQuery } from '../../../store/publishers/requests';
-import { loaded } from '../../../store/publishers/atom';
+import { deletePublisherModal, loaded } from '../../../store/publishers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
 import { publishersSelector } from '../../../store/publishers/selector';
 import { toDictionary } from '../../../utils/parsers';
+import { EditModal } from '../modal';
 
 const Publishers: React.FC = () => {
     const history = useHistory();
@@ -34,11 +35,25 @@ const Publishers: React.FC = () => {
             setIsLoaded(true);
         };
         getPublishers();
-    }, [setPublishers, setIsLoaded, publishersState]);
+    }, []);
+
+    const [
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        deletePublisherModalState,
+        setDeletePublisherModalState,
+    ] = useRecoilState(deletePublisherModal);
+
+    const openDeleteModal = (id) => {
+        setDeletePublisherModalState({
+            publisherId: id,
+            open: true,
+        });
+    };
 
     const publishersList = useRecoilValue(publishersSelector);
     return (
         <Container>
+            <EditModal />
             <Card>
                 <div className={style.flex}>
                     <div>
@@ -88,7 +103,17 @@ const Publishers: React.FC = () => {
                                                 val.id}
                                         </td>
                                         <td>{val.createdAt.toDateString()}</td>
-                                        <td className={style.thRightAligned}>
+                                        <td className={style.actions}>
+                                            <Button
+                                                handleClick={() => {
+                                                    console.log(val.id);
+                                                }}
+                                            >
+                                                <FaEye
+                                                    className={style.iconMargin}
+                                                ></FaEye>
+                                                View
+                                            </Button>
                                             <Button
                                                 handleClick={() => {
                                                     console.log(val.id);
@@ -98,6 +123,16 @@ const Publishers: React.FC = () => {
                                                     className={style.iconMargin}
                                                 ></FaEdit>
                                                 Edit
+                                            </Button>
+                                            <Button
+                                                handleClick={() =>
+                                                    openDeleteModal(val.id)
+                                                }
+                                            >
+                                                <FaTrash
+                                                    className={style.iconMargin}
+                                                ></FaTrash>
+                                                Delete
                                             </Button>
                                         </td>
                                     </tr>

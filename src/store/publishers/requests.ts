@@ -30,3 +30,6 @@ export const createPublisherQuery: (
             createdAt: new Date(res.data.createdAt),
         };
     });
+
+export const deletePublisherQuery: (id: string) => void = (id: string) =>
+    axios.delete('/api/publishers/' + id);

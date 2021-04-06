@@ -26,3 +26,9 @@
     display: flex;
     justify-content: space-between;
 }
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

@@ -16,6 +16,14 @@ export const publisherForm = atom<Publisher>({
     },
 });
 
+export const deletePublisherModal = atom({
+    key: 'deletePublisherModal',
+    default: {
+        publisherId: '',
+        open: false,
+    },
+});
+
 export const loaded = atom<boolean>({
     key: 'publishers_loaded',
     default: false,
