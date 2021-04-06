@@ -6,20 +6,25 @@ import { publishers } from "../../../store/publishers";
 import { useRecoilState } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaPlus } from 'react-icons/fa';
 import { getPublishersQuery } from '../../../store/publishers/requests';
 import { loaded } from '../../../store/publishers/atom';
+import { useHistory } from 'react-router';
+import Routes from '../../../utils/routes';
 
 const Publishers: React.FC = () => {
+
+    const history = useHistory();
+  
+    const changeRoute = (route: string) => {
+      history.push(route);
+    };
     
     const [publishersList, setPublishers] = useRecoilState(publishers);
     const [isLoaded, setIsLoaded] = useRecoilState(loaded);
 
     useEffect(() => {
       const getPublishers = async () => {
-        // setTimeout(() => {
-        //   setIsLoaded(true);
-        // }, 3000);
           const publishers = await getPublishersQuery();
           setPublishers(publishers);
           setIsLoaded(true);
@@ -31,8 +36,19 @@ const Publishers: React.FC = () => {
     return (
       <Container>
           <Card>
-            <h1>Publishers</h1>
-            <h2>Configure your publishers</h2>
+            <div className={style.flex}>
+              <div>
+                <h1>Publishers</h1>
+                <h2>Configure your publishers</h2>
+              </div>
+              <div>
+                <Button handleClick={() => changeRoute(Routes.PublishersNew)}>
+                            <FaPlus className={style.iconMargin}></FaPlus>
+                            New
+                </Button>
+              </div>
+            </div>
+            
             <Divider/>
             { !isLoaded &&
               <div>
@@ -55,7 +71,7 @@ const Publishers: React.FC = () => {
                     return (
                       <tr key={val.id}>
                         <td>{val.name}</td>
-                        <td>localhost:3001/</td>
+                        <td>{window.location.protocol + "//" + window.location.host + '/api/webhooks/' + val.id}</td>
                         <td>{val.createdAt.toDateString()}</td>
                         <td className={style.thRightAligned}>
                           <Button handleClick={() => {console.log(val.id)}}>
