@@ -3,7 +3,7 @@ enum Routes {
     Publishers = '/publishers',
     PublishersNew = '/publishers/new',
     Subscribers = '/subscribers',
-    Mappers = '/mappers'
-  }
-  
-  export default Routes;
+    Mappers = '/mappers',
+}
+
+export default Routes;

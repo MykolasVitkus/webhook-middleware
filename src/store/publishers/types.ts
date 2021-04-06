@@ -9,3 +9,7 @@ export interface PublisherDTO {
     name: string;
     createdAt: string;
 }
+
+export interface PublisherForm {
+    name: string;
+}

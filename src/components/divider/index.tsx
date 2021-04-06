@@ -2,11 +2,7 @@ import React from 'react';
 import style from './style.module.scss';
 
 const Divider: React.FC = () => {
-      return (
-        <div className={style.divider}>
+    return <div className={style.divider}></div>;
+};
 
-        </div>
-      );
-    };
-    
-    export default Divider;
+export default Divider;
