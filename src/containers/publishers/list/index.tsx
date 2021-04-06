@@ -3,7 +3,7 @@ import Card from '../../../components/card';
 import Container from '../../../components/container';
 import style from './style.module.scss';
 import { publishers } from "../../../store/publishers";
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
 import { FaEdit, FaPlus } from 'react-icons/fa';
@@ -11,6 +11,8 @@ import { getPublishersQuery } from '../../../store/publishers/requests';
 import { loaded } from '../../../store/publishers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
+import { publishersSelector } from '../../../store/publishers/selector';
+import { toDictionary } from '../../../utils/parsers';
 
 const Publishers: React.FC = () => {
 
@@ -20,19 +22,19 @@ const Publishers: React.FC = () => {
       history.push(route);
     };
     
-    const [publishersList, setPublishers] = useRecoilState(publishers);
+    const [publishersState, setPublishers] = useRecoilState(publishers);
     const [isLoaded, setIsLoaded] = useRecoilState(loaded);
 
     useEffect(() => {
       const getPublishers = async () => {
           const publishers = await getPublishersQuery();
-          setPublishers(publishers);
+          setPublishers({...publishersState, ...toDictionary(publishers, 'id')});
           setIsLoaded(true);
       };
       getPublishers();
-    }, [setPublishers, setIsLoaded]);
+    }, [setPublishers, setIsLoaded, publishersState]);
 
-
+    const publishersList = useRecoilValue(publishersSelector);
     return (
       <Container>
           <Card>

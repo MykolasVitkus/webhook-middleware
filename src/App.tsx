@@ -7,6 +7,7 @@ import Navbar from './components/navbar';
 import Publishers from './containers/publishers/list';
 import Routes from './utils/routes';
 import styles from './App.module.scss';
+import PublishersNew from './containers/publishers/form';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
           <Switch>
             <Route exact path={Routes.Publishers}>
               <Publishers />
+            </Route>
+            <Route exact path={Routes.PublishersNew}>
+              <PublishersNew />
             </Route>
           </Switch>
         </div>        

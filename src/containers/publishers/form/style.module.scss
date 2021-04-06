@@ -1,0 +1,27 @@
+@import '../../../globals.module.scss';
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60px;
+    max-width: 180px;
+    margin-bottom: 1rem;
+}
+
+.input {
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 32px;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #323743;
+    color: $primText;
+}

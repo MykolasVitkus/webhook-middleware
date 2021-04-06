@@ -1,1 +1,1 @@
-export { publishers } from "./atom";
+export { publishers, publisherForm } from "./atom";
