@@ -20,6 +20,17 @@ export const getPublishersQuery: () => Promise<Publisher[]> = () =>
         });
     });
 
+export const getPublisherByIdQuery: (id: string) => Promise<Publisher> = (
+    id: string,
+) =>
+    axios.get('/api/publishers/' + id).then((res: GetPublisherResponse) => {
+        return {
+            id: res.data._id,
+            name: res.data.name,
+            createdAt: new Date(res.data.createdAt),
+        };
+    });
+
 export const createPublisherQuery: (
     body: PublisherForm,
 ) => Promise<Publisher> = (body: PublisherForm) =>
@@ -30,6 +41,21 @@ export const createPublisherQuery: (
             createdAt: new Date(res.data.createdAt),
         };
     });
+
+export const editPublisherQuery: (
+    body: PublisherForm,
+    id: string,
+) => Promise<Publisher> = (body: PublisherForm, id: string) =>
+    axios
+        .put('/api/publishers/' + id, body)
+        .then((res: GetPublisherResponse) => {
+            console.log(res);
+            return {
+                id: res.data._id,
+                name: res.data.name,
+                createdAt: new Date(res.data.createdAt),
+            };
+        });
 
 export const deletePublisherQuery: (id: string) => void = (id: string) =>
     axios.delete('/api/publishers/' + id);

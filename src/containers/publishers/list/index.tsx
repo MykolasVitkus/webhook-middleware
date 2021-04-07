@@ -8,7 +8,10 @@ import Divider from '../../../components/divider';
 import Button from '../../../components/button';
 import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { getPublishersQuery } from '../../../store/publishers/requests';
-import { deletePublisherModal, loaded } from '../../../store/publishers/atom';
+import {
+    deletePublisherModal,
+    loadedPublishersList,
+} from '../../../store/publishers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
 import { publishersSelector } from '../../../store/publishers/selector';
@@ -23,7 +26,8 @@ const Publishers: React.FC = () => {
     };
 
     const [publishersState, setPublishers] = useRecoilState(publishers);
-    const [isLoaded, setIsLoaded] = useRecoilState(loaded);
+    const [isLoaded, setIsLoaded] = useRecoilState(loadedPublishersList);
+    const publishersList = useRecoilValue(publishersSelector);
 
     useEffect(() => {
         const getPublishers = async () => {
@@ -34,8 +38,10 @@ const Publishers: React.FC = () => {
             });
             setIsLoaded(true);
         };
-        getPublishers();
-    }, []);
+        if (!isLoaded) {
+            getPublishers();
+        }
+    }, [isLoaded]);
 
     const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -50,7 +56,6 @@ const Publishers: React.FC = () => {
         });
     };
 
-    const publishersList = useRecoilValue(publishersSelector);
     return (
         <Container>
             <EditModal />
@@ -105,9 +110,14 @@ const Publishers: React.FC = () => {
                                         <td>{val.createdAt.toDateString()}</td>
                                         <td className={style.actions}>
                                             <Button
-                                                handleClick={() => {
-                                                    console.log(val.id);
-                                                }}
+                                                handleClick={() =>
+                                                    changeRoute(
+                                                        Routes.PublishersView.replace(
+                                                            ':id',
+                                                            val.id,
+                                                        ),
+                                                    )
+                                                }
                                             >
                                                 <FaEye
                                                     className={style.iconMargin}
@@ -115,9 +125,14 @@ const Publishers: React.FC = () => {
                                                 View
                                             </Button>
                                             <Button
-                                                handleClick={() => {
-                                                    console.log(val.id);
-                                                }}
+                                                handleClick={() =>
+                                                    changeRoute(
+                                                        Routes.PublishersEdit.replace(
+                                                            ':id',
+                                                            val.id,
+                                                        ),
+                                                    )
+                                                }
                                             >
                                                 <FaEdit
                                                     className={style.iconMargin}

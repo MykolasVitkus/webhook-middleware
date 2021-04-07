@@ -12,7 +12,7 @@ import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
 import { PublisherForm } from '../../../store/publishers/types';
 
-const PublishersNew: React.FC = () => {
+export const PublishersNew: React.FC = () => {
     const history = useHistory();
 
     const changeRoute = (route: string) => {
@@ -109,5 +109,3 @@ const PublishersNew: React.FC = () => {
         </Container>
     );
 };
-
-export default PublishersNew;

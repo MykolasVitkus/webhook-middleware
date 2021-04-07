@@ -24,7 +24,12 @@ export const deletePublisherModal = atom({
     },
 });
 
-export const loaded = atom<boolean>({
-    key: 'publishers_loaded',
+export const loadedPublishersList = atom({
+    key: 'loadedPublishersList',
+    default: false,
+});
+
+export const loadedPublisher = atom({
+    key: 'loadedPublisher',
     default: false,
 });
