@@ -1,0 +1,34 @@
+.table {
+    width: 100%;
+}
+
+.tdLeftAligned {
+    text-align: start;
+}
+
+.thLeftAligned {
+    text-align: start;
+}
+
+.tdRightAligned {
+    text-align: end;
+}
+
+.thRightAligned {
+    text-align: end;
+}
+
+.iconMargin {
+    margin-right: 6px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

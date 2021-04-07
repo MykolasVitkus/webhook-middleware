@@ -1,0 +1,53 @@
+@import '../../../globals.module.scss';
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 180px;
+    margin-bottom: 1rem;
+}
+
+.input {
+    margin-top: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 32px;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #323743;
+    color: $primText;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 5%;
+}
+
+.inputError {
+    @extend .input;
+    border: 2px solid red;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 12px;
+}
+
+.editors {
+    display: flex;
+}
+
+.editor {
+    margin-right: 1rem;
+    width: 500px;
+}
+
+.button {
+    margin-top: 1rem;
+}

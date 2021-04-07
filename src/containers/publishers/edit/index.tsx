@@ -66,7 +66,6 @@ export const PublishersEdit: React.FC = () => {
                 publishersForm,
                 id,
             );
-            console.log(updatedPublisher);
             setPublishers({
                 ...publishersState,
                 [updatedPublisher.id]: updatedPublisher,
@@ -100,6 +99,7 @@ export const PublishersEdit: React.FC = () => {
     return (
         <Container>
             <Card>
+                {!isLoaded && <div>Loading</div>}
                 {isLoaded && (
                     <div>
                         <h1>Edit Publisher</h1>

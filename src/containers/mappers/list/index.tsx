@@ -2,56 +2,56 @@ import React, { useEffect } from 'react';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import style from './style.module.scss';
-import { publishers } from '../../../store/publishers';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
 import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
-import { getPublishersQuery } from '../../../store/publishers/requests';
 import {
-    deletePublisherModal,
-    loadedPublishersList,
-} from '../../../store/publishers/atom';
+    deleteMapperModal,
+    loadedMappersList,
+} from '../../../store/mappers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
-import { publishersSelector } from '../../../store/publishers/selector';
 import { toDictionary } from '../../../utils/parsers';
 import { DeleteModal } from '../modal';
+import { getMappersQuery } from '../../../store/mappers/requests';
+import { mappers } from '../../../store/mappers/atom';
+import { mappersSelector } from '../../../store/mappers/selector';
 
-const Publishers: React.FC = () => {
+const Mappers: React.FC = () => {
     const history = useHistory();
 
     const changeRoute = (route: string) => {
         history.push(route);
     };
 
-    const [publishersState, setPublishers] = useRecoilState(publishers);
-    const [isLoaded, setIsLoaded] = useRecoilState(loadedPublishersList);
-    const publishersList = useRecoilValue(publishersSelector);
+    const [mappersState, setMappers] = useRecoilState(mappers);
+    const [isLoaded, setIsLoaded] = useRecoilState(loadedMappersList);
+    const mappersList = useRecoilValue(mappersSelector);
 
     useEffect(() => {
-        const getPublishers = async () => {
-            const publishers = await getPublishersQuery();
-            setPublishers({
-                ...publishersState,
-                ...toDictionary(publishers, 'id'),
+        const getMappers = async () => {
+            const mappers = await getMappersQuery();
+            setMappers({
+                ...mappersState,
+                ...toDictionary(mappers, 'id'),
             });
             setIsLoaded(true);
         };
         if (!isLoaded) {
-            getPublishers();
+            getMappers();
         }
     }, [isLoaded]);
 
     const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        deletePublisherModalState,
-        setDeletePublisherModalState,
-    ] = useRecoilState(deletePublisherModal);
+        deleteMapperModalState,
+        setDeleteMapperModalState,
+    ] = useRecoilState(deleteMapperModal);
 
     const openDeleteModal = (id) => {
-        setDeletePublisherModalState({
-            publisherId: id,
+        setDeleteMapperModalState({
+            mapperId: id,
             open: true,
         });
     };
@@ -62,14 +62,12 @@ const Publishers: React.FC = () => {
             <Card>
                 <div className={style.flex}>
                     <div>
-                        <h1>Publishers</h1>
-                        <h2>Configure your publishers</h2>
+                        <h1>Mappers</h1>
+                        <h2>Configure your mappers</h2>
                     </div>
                     <div>
                         <Button
-                            handleClick={() =>
-                                changeRoute(Routes.PublishersNew)
-                            }
+                            handleClick={() => changeRoute(Routes.MappersNew)}
                         >
                             <FaPlus className={style.iconMargin}></FaPlus>
                             New
@@ -85,9 +83,6 @@ const Publishers: React.FC = () => {
                             <tr>
                                 <th className={style.thLeftAligned}>Name</th>
                                 <th className={style.thLeftAligned}>
-                                    Webhook Link
-                                </th>
-                                <th className={style.thLeftAligned}>
                                     Created At
                                 </th>
                                 <th className={style.thRightAligned}>
@@ -96,23 +91,16 @@ const Publishers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {publishersList.map((val) => {
+                            {mappersList.map((val) => {
                                 return (
                                     <tr key={val.id}>
                                         <td>{val.name}</td>
-                                        <td>
-                                            {window.location.protocol +
-                                                '//' +
-                                                window.location.host +
-                                                '/api/webhooks/' +
-                                                val.id}
-                                        </td>
                                         <td>{val.createdAt.toDateString()}</td>
                                         <td className={style.actions}>
                                             <Button
                                                 handleClick={() =>
                                                     changeRoute(
-                                                        Routes.PublishersView.replace(
+                                                        Routes.MappersView.replace(
                                                             ':id',
                                                             val.id,
                                                         ),
@@ -127,7 +115,7 @@ const Publishers: React.FC = () => {
                                             <Button
                                                 handleClick={() =>
                                                     changeRoute(
-                                                        Routes.PublishersEdit.replace(
+                                                        Routes.MappersEdit.replace(
                                                             ':id',
                                                             val.id,
                                                         ),
@@ -161,4 +149,4 @@ const Publishers: React.FC = () => {
     );
 };
 
-export default Publishers;
+export default Mappers;

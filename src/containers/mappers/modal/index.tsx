@@ -3,27 +3,23 @@ import { useRecoilState } from 'recoil';
 import Button from '../../../components/button';
 import Divider from '../../../components/divider';
 import Modal from '../../../components/modal';
-import {
-    deletePublisherModal,
-    publishers,
-} from '../../../store/publishers/atom';
-import { deletePublisherQuery } from '../../../store/publishers/requests';
+import { deleteMapperModal, mappers } from '../../../store/mappers/atom';
+import { deleteMapperQuery } from '../../../store/mappers/requests';
 import { fromDictionary, toDictionary } from '../../../utils/parsers';
 import style from './style.module.scss';
 
 export const DeleteModal: React.FC = () => {
-    const [
-        deletePublisherModalState,
-        setDeletePublisherModalState,
-    ] = useRecoilState(deletePublisherModal);
+    const [deleteMapperModalState, setDeleteMapperModalState] = useRecoilState(
+        deleteMapperModal,
+    );
 
-    const [publishersState, setPublishers] = useRecoilState(publishers);
+    const [mappersState, setMappers] = useRecoilState(mappers);
 
-    const deletePublisher = (id) => {
-        deletePublisherQuery(id);
-        setPublishers(
+    const deleteMapper = (id) => {
+        deleteMapperQuery(id);
+        setMappers(
             toDictionary(
-                fromDictionary(publishersState).filter((val) => val.id !== id),
+                fromDictionary(mappersState).filter((val) => val.id !== id),
                 'id',
             ),
         );
@@ -31,26 +27,26 @@ export const DeleteModal: React.FC = () => {
     };
 
     const closeModal = () => {
-        setDeletePublisherModalState({
-            publisherId: '',
+        setDeleteMapperModalState({
+            mapperId: '',
             open: false,
         });
     };
 
     return (
         <div>
-            {deletePublisherModalState.open && (
+            {deleteMapperModalState.open && (
                 <Modal>
                     <div className={style.modalContent}>
-                        <h1>Delete Publisher</h1>
+                        <h1>Delete Mapper</h1>
                         <h2>This action is permanent</h2>
                         <Divider />
-                        <p>Are you sure you want to delete this publisher?</p>
+                        <p>Are you sure you want to delete this mapper?</p>
                         <div className={style.actions}>
                             <Button
                                 handleClick={() =>
-                                    deletePublisher(
-                                        deletePublisherModalState.publisherId,
+                                    deleteMapper(
+                                        deleteMapperModalState.mapperId,
                                     )
                                 }
                             >

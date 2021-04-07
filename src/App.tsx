@@ -8,6 +8,8 @@ import styles from './App.module.scss';
 import { PublishersNew } from './containers/publishers/create';
 import { PublishersEdit } from './containers/publishers/edit';
 import { PublisherView } from './containers/publishers/view';
+import MappersCreate from './containers/mappers/create';
+import Mappers from './containers/mappers/list';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App() {
@@ -29,6 +31,12 @@ function App() {
                         </Route>
                         <Route exact path={Routes.PublishersView}>
                             <PublisherView />
+                        </Route>
+                        <Route exact path={Routes.Mappers}>
+                            <Mappers />
+                        </Route>
+                        <Route exact path={Routes.MappersNew}>
+                            <MappersCreate />
                         </Route>
                     </Switch>
                 </div>
