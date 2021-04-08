@@ -1,3 +1,5 @@
+@import '../../globals.module.scss';
+
 .modal {
     position: fixed;
     background-color: #414755;
@@ -8,7 +10,7 @@
     top: calc(-50vh + 50%);
     bottom: calc(-50vh + 50%);
     margin: auto;
-    border: 1px solid #323743;
-    border-radius: 1%;
+    border: 1px solid $backgroundColor;
+    border-radius: 2px;
 }
 

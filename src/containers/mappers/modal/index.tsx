@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useRecoilState } from 'recoil';
 import Button from '../../../components/button';
 import Divider from '../../../components/divider';
@@ -6,9 +7,15 @@ import Modal from '../../../components/modal';
 import { deleteMapperModal, mappers } from '../../../store/mappers/atom';
 import { deleteMapperQuery } from '../../../store/mappers/requests';
 import { fromDictionary, toDictionary } from '../../../utils/parsers';
+import Routes from '../../../utils/routes';
 import style from './style.module.scss';
 
 export const DeleteModal: React.FC = () => {
+    const history = useHistory();
+
+    const changeRoute = (route: string) => {
+        history.push(route);
+    };
     const [deleteMapperModalState, setDeleteMapperModalState] = useRecoilState(
         deleteMapperModal,
     );
@@ -24,6 +31,7 @@ export const DeleteModal: React.FC = () => {
             ),
         );
         closeModal();
+        changeRoute(Routes.Mappers);
     };
 
     const closeModal = () => {

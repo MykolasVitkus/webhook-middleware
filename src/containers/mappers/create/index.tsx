@@ -11,10 +11,12 @@ import Button from '../../../components/button';
 import Routes from '../../../utils/routes';
 import { useHistory } from 'react-router';
 import { useRecoilState } from 'recoil';
-import { mappers } from '../../../store/mappers/atom';
+import { createMapperForm, mappers } from '../../../store/mappers/atom';
 import { createMapperQuery } from '../../../store/mappers/requests';
 import { MapperForm } from '../../../store/mappers/types';
 import jsonpathObjectTransform from '../../../lib/jsonpath-object-transform';
+import 'brace/theme/dracula';
+import 'jsoneditor-react/es/editor.min.css';
 
 export const MappersCreate: React.FC = () => {
     const history = useHistory();
@@ -23,25 +25,16 @@ export const MappersCreate: React.FC = () => {
         history.push(route);
     };
 
-    const json = {
-        name: 'test webhook',
-        type: 1,
-        chansnel_id: '199737254929760256',
-        token:
-            '3d89bb7572e0fb30d8128367b3b1b44fecd1726de135cbe28a41f8b2f777c372ba2939e72279b94526ff5d1bd4358d65cf11',
-        message: 'Hello Guys',
-    };
-
     const [transformedFormat, setTransformedFormat] = useState({});
 
-    const [mappersForm, setMappersForm] = useState<MapperForm>({
-        name: '',
-        format: {},
-    });
+    const [mappersForm, setMappersForm] = useRecoilState<MapperForm>(
+        createMapperForm,
+    );
 
-    const [mapperFormErrors, setMapperFormErrors] = useState<MapperForm>({
+    const [mapperFormErrors, setMapperFormErrors] = useState({
         name: '',
         format: '',
+        sample: '',
     });
 
     const [mappersState, setMappers] = useRecoilState(mappers);
@@ -53,14 +46,29 @@ export const MappersCreate: React.FC = () => {
             setMapperFormErrors({
                 name: '',
                 format: '',
+                sample: '',
             });
             const newMapper = await createMapperQuery(mappersForm);
             setMappers({
                 ...mappersState,
                 [newMapper.id]: newMapper,
             });
+            setMappersForm({
+                name: '',
+                format: {},
+                sample: {},
+            });
             changeRoute(Routes.Mappers);
         }
+    };
+
+    const onBaseFormatChange = (data) => {
+        setMappersForm({
+            ...mappersForm,
+            sample: data,
+        });
+        const newFormat = jsonpathObjectTransform(data, mappersForm.format);
+        setTransformedFormat(newFormat);
     };
 
     const onMapperFormatChange = (data) => {
@@ -68,7 +76,7 @@ export const MappersCreate: React.FC = () => {
             ...mappersForm,
             format: data,
         });
-        const newFormat = jsonpathObjectTransform(json, data);
+        const newFormat = jsonpathObjectTransform(mappersForm.sample, data);
         setTransformedFormat(newFormat);
     };
 
@@ -85,20 +93,34 @@ export const MappersCreate: React.FC = () => {
                         });
                     }
                     break;
-                case 'format':
-                    if (form[key].length < 1) {
-                        errors = true;
-                        setMapperFormErrors({
-                            ...mapperFormErrors,
-                            format: 'This value cannot be empty.',
-                        });
-                    }
-                    break;
                 default:
                     break;
             }
         });
         return errors;
+    };
+
+    const readOnlyAceFactory = {
+        edit: (domElement) => {
+            const editor = ace.edit(domElement);
+            setTimeout(() => {
+                editor.setReadOnly(true);
+                editor.setHighlightActiveLine(false);
+                editor.setOption('highlightGutterLine', false);
+            });
+            return editor;
+        },
+    };
+
+    const aceEditor = {
+        edit: (domElement) => {
+            const editor = ace.edit(domElement);
+            setTimeout(() => {
+                editor.setHighlightActiveLine(false);
+                editor.setOption('highlightGutterLine', false);
+            });
+            return editor;
+        },
     };
 
     return (
@@ -114,7 +136,11 @@ export const MappersCreate: React.FC = () => {
                             <input
                                 type="text"
                                 name="name"
-                                className={style.input}
+                                className={
+                                    mapperFormErrors.name.length > 0
+                                        ? style.inputError
+                                        : style.input
+                                }
                                 autoComplete="off"
                                 value={mappersForm.name}
                                 onChange={(e) =>
@@ -125,23 +151,33 @@ export const MappersCreate: React.FC = () => {
                                 }
                             ></input>
                             <div className={style.errorMessage}>
-                                {/* {publishersFormErrors.name} */}
+                                {mapperFormErrors.name}
                             </div>
                         </div>
                         <div className={style.editors}>
                             <div className={style.editor}>
-                                From
+                                <div className={style.label}>From</div>
                                 <Editor
-                                    value={json}
+                                    value={mappersForm.sample}
+                                    onChange={(content) =>
+                                        onBaseFormatChange(content)
+                                    }
                                     mode={'code'}
-                                    ace={ace}
+                                    ace={aceEditor}
+                                    theme={'ace/theme/dracula'}
                                     indentation={4}
                                     mainMenuBar={false}
                                     statusBar={false}
                                 />
                             </div>
-                            <div className={style.editor}>
-                                To
+                            <div
+                                className={
+                                    mapperFormErrors.format.length > 0
+                                        ? style.editorError
+                                        : style.editor
+                                }
+                            >
+                                <div className={style.label}>To</div>
                                 <Editor
                                     onChange={(content) =>
                                         onMapperFormatChange(content)
@@ -151,20 +187,37 @@ export const MappersCreate: React.FC = () => {
                                     mainMenuBar={false}
                                     statusBar={false}
                                     mode={'code'}
+                                    theme={'ace/theme/dracula'}
                                     indentation={4}
-                                    // onError={() => 'Invalid JSON'}
-                                    ace={ace}
+                                    onValidationError={(error) => {
+                                        if (error.length < 1) {
+                                            setMapperFormErrors({
+                                                ...mapperFormErrors,
+                                                format: '',
+                                            });
+                                        } else {
+                                            setMapperFormErrors({
+                                                ...mapperFormErrors,
+                                                format: 'Invalid JSON provided',
+                                            });
+                                        }
+                                    }}
+                                    ace={aceEditor}
                                 />
+                                <div className={style.errorMessage}>
+                                    {mapperFormErrors.format}
+                                </div>
                             </div>
                             <div className={style.editor}>
-                                Result
+                                <div className={style.label}>Result</div>
                                 <Editor
                                     key={JSON.stringify(transformedFormat)}
                                     value={transformedFormat}
+                                    ace={readOnlyAceFactory}
                                     mode={'code'}
+                                    theme={'ace/theme/dracula'}
                                     mainMenuBar={false}
                                     indentation={4}
-                                    disabled={true}
                                     statusBar={false}
                                 />
                             </div>

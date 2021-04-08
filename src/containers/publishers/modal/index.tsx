@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useRecoilState } from 'recoil';
 import Button from '../../../components/button';
 import Divider from '../../../components/divider';
@@ -9,9 +10,16 @@ import {
 } from '../../../store/publishers/atom';
 import { deletePublisherQuery } from '../../../store/publishers/requests';
 import { fromDictionary, toDictionary } from '../../../utils/parsers';
+import Routes from '../../../utils/routes';
 import style from './style.module.scss';
 
 export const DeleteModal: React.FC = () => {
+    const history = useHistory();
+
+    const changeRoute = (route: string) => {
+        history.push(route);
+    };
+
     const [
         deletePublisherModalState,
         setDeletePublisherModalState,
@@ -28,6 +36,7 @@ export const DeleteModal: React.FC = () => {
             ),
         );
         closeModal();
+        changeRoute(Routes.Publishers);
     };
 
     const closeModal = () => {

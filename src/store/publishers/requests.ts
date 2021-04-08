@@ -49,7 +49,6 @@ export const editPublisherQuery: (
     axios
         .put('/api/publishers/' + id, body)
         .then((res: GetPublisherResponse) => {
-            console.log(res);
             return {
                 id: res.data._id,
                 name: res.data.name,

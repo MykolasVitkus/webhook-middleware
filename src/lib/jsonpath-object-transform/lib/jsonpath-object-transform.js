@@ -76,9 +76,26 @@
         if (pathStr.indexOf('$') < 0) {
             result[key] = pathStr;
         } else {
-            var seek = jsonPath.eval(data, pathStr) || [];
-
-            result[key] = seek.length ? seek[0] : undefined;
+            if (!(pathStr.indexOf('`') < 0)) {
+                var temp = [];
+                var parts = pathStr.split(/[``]/);
+                if (parts.length == 0) {
+                    result[key] = pathStr;
+                } else {
+                    parts.forEach((part, index) => {
+                        if (part.indexOf('$') < 0) {
+                            temp[index] = part;
+                        } else {
+                            var temp2 = jsonPath.eval(data, part) || [];
+                            temp[index] = temp2.length ? temp2[0] : part;
+                        }
+                    });
+                    result[key] = temp.join('');
+                }
+            } else {
+                var seek = jsonPath.eval(data, pathStr) || [];
+                result[key] = seek.length ? seek[0] : pathStr;
+            }
         }
     }
 

@@ -1,21 +1,21 @@
 export interface MapperForm {
     name: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    format: any;
+    format: unknown;
+    sample: unknown;
 }
 
 export interface Mapper {
     id: string;
     name: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    format: any;
+    format: unknown;
+    sample: unknown;
     createdAt: Date;
 }
 
 export interface MapperDTO {
     _id: string;
     name: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    format: any;
+    format: unknown;
+    sample: unknown;
     createdAt: Date;
 }

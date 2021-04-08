@@ -22,7 +22,7 @@
     background-color: transparent;
     cursor: pointer;
     font-size: 14px;
-    border: 1px solid $backgroundColor;
+    border: 1px solid $navColor;
     color: $primText;
     -webkit-appearance: none;
     outline: none;
@@ -37,4 +37,38 @@
 .errorMessage {
     color: red;
     font-size: 12px;
+}
+
+.editors {
+    display: flex;
+}
+
+.editor {
+    width: 500px;
+    padding: 0.5rem;
+}
+
+.button {
+    margin-top: 1rem;
+}
+.label {
+    margin-bottom: 4px;
+}
+
+.editorError {
+    @extend .editor;
+    border: 2px solid red;
+}
+
+.jsonEditor {
+    height: 100%;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.iconMargin {
+    margin-right: 6px;
 }

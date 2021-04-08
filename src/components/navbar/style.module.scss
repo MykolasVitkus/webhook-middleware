@@ -1,18 +1,16 @@
-
-$shadeColor: #3e4148;
-$textColor: rgb(178, 185, 191);
-$activeNavItem: rgba(#fff, .1);
+@import '../../globals.module.scss';
+$activeNavItem: rgba(#fff, 0.1);
 
 .navigation {
     text-transform: uppercase;
     font-size: 13px;
     letter-spacing: 1px;
-    background-color: #414755;
+    background-color: $navColor;
     position: fixed;
     width: 250px;
     // border-right: 1px solid $shadeColor;
     height: 100%;
-  }
+}
 
 .logo {
     display: flex;
@@ -44,6 +42,6 @@ $activeNavItem: rgba(#fff, .1);
 }
 
 .navItem_icon {
-    color: $textColor;
+    color: $primText;
     margin-right: 6px;
 }

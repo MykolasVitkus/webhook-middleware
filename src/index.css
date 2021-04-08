@@ -1,9 +1,16 @@
 body {
-  margin: 0;
-  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+    margin: 0;
+    font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
 }
 
 code {
-  font-family: Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: Monaco, Consolas, 'Courier New', monospace;
+}
+
+div.jsoneditor-mode-code {
+    height: 100%;
+}
+
+.jsoneditor {
+    border: thin solid #414755 !important;
 }

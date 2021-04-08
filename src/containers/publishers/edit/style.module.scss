@@ -22,11 +22,11 @@
     background-color: transparent;
     cursor: pointer;
     font-size: 14px;
-    border: 1px solid #323743;
+    border: 1px solid $backgroundColor;
     color: $primText;
     -webkit-appearance: none;
     outline: none;
-    border-radius: 5%;
+    border-radius: 2px;
 }
 
 .inputError {
