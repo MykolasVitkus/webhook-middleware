@@ -6,7 +6,7 @@ export interface Webhook {
     publisherId: string | null;
     subscriberId: string | null;
     createdAt: Date;
-    metadata: unknown;
+    metadata: ResponseType | null;
     prevEvent: Webhook | null;
 }
 
@@ -18,6 +18,16 @@ export interface WebhookDTO {
     publisherId: string | null;
     subscriberId: string | null;
     createdAt: Date;
-    metadata: unknown;
+    metadata: ResponseType | null;
     prevEvent: Webhook | null;
+}
+
+export enum WebhookStatus {
+    Error = 'error',
+    Success = 'success',
+}
+
+export interface ResponseType {
+    response: string | null;
+    status: number;
 }

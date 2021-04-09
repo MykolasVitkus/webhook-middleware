@@ -1,0 +1,99 @@
+@import '../../../globals.module.scss';
+
+.webhookList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.webhook {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 300px;
+    background-color: $shadeColor;
+    border: 1px solid $navColor;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-start;
+}
+.flexRow {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.flexRowFullWidth {
+    @extend .flexRow;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.webhookHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.webhookStatus {
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 13px;
+    color: white;
+    height: 1rem;
+    margin-left: 4px;
+}
+
+.webhookStatusSuccess {
+    @extend .webhookStatus;
+    background-color: rgb(67, 128, 67);
+}
+
+.webhookStatusError {
+    @extend .webhookStatus;
+    background-color: rgb(161, 23, 23);
+}
+
+.iconMargin {
+    margin-right: 6px;
+}
+
+.button {
+    padding-left: 18px;
+    padding-right: 18px;
+    height: 32px;
+    box-shadow: none;
+    background-color: $backgroundColor;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid $navColor;
+    border-radius: 2px;
+    outline: none;
+    color: $primText;
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+}
+
+.link {
+    margin-left: 4px;
+    color: lightblue;
+    cursor: pointer;
+}
+
+.editors {
+    display: flex;
+}
+
+.editor {
+    width: 50%;
+    padding: 0.5rem;
+}

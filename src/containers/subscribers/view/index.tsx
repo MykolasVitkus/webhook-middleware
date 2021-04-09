@@ -6,20 +6,20 @@ import Button from '../../../components/button';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import Divider from '../../../components/divider';
-import { deletePublisherModal } from '../../../store/publishers/atom';
-import { publishersByIdSelector } from '../../../store/publishers/selector';
-import { publishedWebhooksSelector } from '../../../store/webhooks/selector';
+import { deleteSubscriberModal } from '../../../store/subscribers/atom';
+import { subscribersByIdSelector } from '../../../store/subscribers/selector';
+import { receivedWebhooksSelector } from '../../../store/webhooks/selector';
 import Routes from '../../../utils/routes';
-import { PublisherWebhooksList } from '../../webhooks/published-list';
+import { SubscriberWebhooksList } from '../../webhooks/received-list';
 import { DeleteModal } from '../modal';
 import style from './style.module.scss';
 
-export const PublisherView: React.FC = () => {
+export const SubscribersView: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { id } = useParams<any>();
-    const publisher = useRecoilValueLoadable(publishersByIdSelector(id));
-    const publishedWebhooks = useRecoilValueLoadable(
-        publishedWebhooksSelector(id),
+    const subscriber = useRecoilValueLoadable(subscribersByIdSelector(id));
+    const receivedWebhooks = useRecoilValueLoadable(
+        receivedWebhooksSelector(id),
     );
 
     const history = useHistory();
@@ -30,13 +30,13 @@ export const PublisherView: React.FC = () => {
 
     const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        deletePublisherModalState,
-        setDeletePublisherModalState,
-    ] = useRecoilState(deletePublisherModal);
+        deleteSubscriberModalState,
+        setDeleteSubscriberModalState,
+    ] = useRecoilState(deleteSubscriberModal);
 
     const openDeleteModal = (id) => {
-        setDeletePublisherModalState({
-            publisherId: id,
+        setDeleteSubscriberModalState({
+            subscriberId: id,
             open: true,
         });
     };
@@ -46,15 +46,15 @@ export const PublisherView: React.FC = () => {
             <Card>
                 <DeleteModal />
 
-                {publisher.state === 'loading' && <div>Loading</div>}
-                {publisher.state === 'hasValue' && (
+                {subscriber.state === 'loading' && <div>Loading</div>}
+                {subscriber.state === 'hasValue' && (
                     <div>
                         <div className={style.flex}>
                             <div>
-                                <h1>{publisher.contents.name}</h1>
+                                <h1>{subscriber.contents.name}</h1>
                                 <h2>
                                     Created at{' '}
-                                    {publisher.contents.createdAt.toDateString()}
+                                    {subscriber.contents.createdAt.toDateString()}
                                 </h2>
                             </div>
 
@@ -62,7 +62,7 @@ export const PublisherView: React.FC = () => {
                                 <Button
                                     handleClick={() =>
                                         changeRoute(
-                                            Routes.PublishersEdit.replace(
+                                            Routes.SubscribersEdit.replace(
                                                 ':id',
                                                 id,
                                             ),
@@ -76,7 +76,7 @@ export const PublisherView: React.FC = () => {
                                 </Button>
                                 <Button
                                     handleClick={() =>
-                                        openDeleteModal(publisher.contents.id)
+                                        openDeleteModal(subscriber.contents.id)
                                     }
                                 >
                                     <FaEdit
@@ -88,13 +88,13 @@ export const PublisherView: React.FC = () => {
                         </div>
 
                         <Divider />
-                        {publishedWebhooks.state === 'loading' && (
+                        {receivedWebhooks.state === 'loading' && (
                             <div>Loading</div>
                         )}
-                        {publishedWebhooks.state === 'hasValue' && (
-                            <PublisherWebhooksList
-                                data={publishedWebhooks.contents}
-                                publisher={publisher.contents}
+                        {receivedWebhooks.state === 'hasValue' && (
+                            <SubscriberWebhooksList
+                                data={receivedWebhooks.contents}
+                                subscriber={subscriber.contents}
                             />
                         )}
                     </div>
