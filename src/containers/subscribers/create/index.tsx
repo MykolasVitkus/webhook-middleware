@@ -3,92 +3,85 @@ import Card from '../../../components/card';
 import Container from '../../../components/container';
 import Divider from '../../../components/divider';
 import style from './style.module.scss';
-import { JsonEditor as Editor } from 'jsoneditor-react';
-import ace from 'brace';
 import 'brace/mode/json';
 import 'brace/theme/github';
 import Button from '../../../components/button';
 import Routes from '../../../utils/routes';
 import { useHistory } from 'react-router';
-import { useRecoilState } from 'recoil';
-import { createMapperForm, mappers } from '../../../store/mappers/atom';
-import { createMapperQuery } from '../../../store/mappers/requests';
-import { MapperForm } from '../../../store/mappers/types';
-import jsonpathObjectTransform from '../../../lib/jsonpath-object-transform';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { Mapper } from '../../../store/mappers/types';
 import 'brace/theme/dracula';
 import 'jsoneditor-react/es/editor.min.css';
+import {
+    SubscribedPublisher,
+    SubscriberForm,
+} from '../../../store/subscribers/types';
+import {
+    createSubscriberForm,
+    subscribers,
+} from '../../../store/subscribers/atom';
+import { createSubscriberQuery } from '../../../store/subscribers/requests';
+import { mappersQuerySelector } from '../../../store/mappers/selector';
+import { publishersQuerySelector } from '../../../store/publishers/selector';
+import { Publisher } from '../../../store/publishers/types';
 
-export const MappersCreate: React.FC = () => {
+export const SubscribersCreate: React.FC = () => {
     const history = useHistory();
 
     const changeRoute = (route: string) => {
         history.push(route);
     };
 
-    const [transformedFormat, setTransformedFormat] = useState({});
-
-    const [mappersForm, setMappersForm] = useRecoilState<MapperForm>(
-        createMapperForm,
+    const [subscriberForm, setSubscriberForm] = useRecoilState<SubscriberForm>(
+        createSubscriberForm,
     );
 
-    const [mapperFormErrors, setMapperFormErrors] = useState({
+    const [subscriberFormErrors, setSubscriberFormErrors] = useState({
         name: '',
-        format: '',
-        sample: '',
+        webhookUrl: '',
+        subscribedTo: [],
     });
 
-    const [mappersState, setMappers] = useRecoilState(mappers);
+    const publishersState = useRecoilValueLoadable(publishersQuerySelector);
+    const mappersState = useRecoilValueLoadable(mappersQuerySelector);
+
+    const [subscribersState, setSubscribers] = useRecoilState(subscribers);
 
     const submitForm = async (e) => {
+        console.log(subscriberForm);
         e.preventDefault();
-        const errors = validate(mappersForm);
+        const errors = validate(subscriberForm);
         if (!errors) {
-            setMapperFormErrors({
+            setSubscriberFormErrors({
                 name: '',
-                format: '',
-                sample: '',
+                webhookUrl: '',
+                subscribedTo: [],
             });
-            const newMapper = await createMapperQuery(mappersForm);
-            setMappers({
-                ...mappersState,
-                [newMapper.id]: newMapper,
+            const newSubscriber = await createSubscriberQuery(subscriberForm);
+            setSubscribers({
+                ...subscribersState,
+                [newSubscriber.id]: newSubscriber,
             });
-            setMappersForm({
+            setSubscriberForm({
                 name: '',
-                format: {},
-                sample: {},
+                webhookUrl: '',
+                subscribedTo: [],
             });
-            changeRoute(Routes.Mappers);
+            changeRoute(Routes.Subscribers);
         }
     };
 
-    const onBaseFormatChange = (data) => {
-        setMappersForm({
-            ...mappersForm,
-            sample: data,
-        });
-        const newFormat = jsonpathObjectTransform(data, mappersForm.format);
-        setTransformedFormat(newFormat);
-    };
-
-    const onMapperFormatChange = (data) => {
-        setMappersForm({
-            ...mappersForm,
-            format: data,
-        });
-        const newFormat = jsonpathObjectTransform(mappersForm.sample, data);
-        setTransformedFormat(newFormat);
-    };
-
-    const validate: (form: MapperForm) => boolean = (form: MapperForm) => {
+    const validate: (form: SubscriberForm) => boolean = (
+        form: SubscriberForm,
+    ) => {
         let errors = false;
         Object.keys(form).map((key) => {
             switch (key) {
                 case 'name':
                     if (form[key].length < 1) {
                         errors = true;
-                        setMapperFormErrors({
-                            ...mapperFormErrors,
+                        setSubscriberFormErrors({
+                            ...subscriberFormErrors,
                             name: 'This value cannot be empty.',
                         });
                     }
@@ -100,35 +93,37 @@ export const MappersCreate: React.FC = () => {
         return errors;
     };
 
-    const readOnlyAceFactory = {
-        edit: (domElement) => {
-            const editor = ace.edit(domElement);
-            setTimeout(() => {
-                editor.setReadOnly(true);
-                editor.setHighlightActiveLine(false);
-                editor.setOption('highlightGutterLine', false);
+    const addSubscription = (e) => {
+        e.preventDefault();
+        if (
+            publishersState.state === 'hasValue' &&
+            mappersState.state === 'hasValue'
+        ) {
+            setSubscriberForm({
+                ...subscriberForm,
+                subscribedTo: [
+                    ...subscriberForm.subscribedTo,
+                    {
+                        publisherId:
+                            publishersState.contents.length > 0
+                                ? publishersState.contents[0].id
+                                : '',
+                        mapperId:
+                            mappersState.contents.length > 0
+                                ? mappersState.contents[0].id
+                                : '',
+                    },
+                ],
             });
-            return editor;
-        },
-    };
-
-    const aceEditor = {
-        edit: (domElement) => {
-            const editor = ace.edit(domElement);
-            setTimeout(() => {
-                editor.setHighlightActiveLine(false);
-                editor.setOption('highlightGutterLine', false);
-            });
-            return editor;
-        },
+        }
     };
 
     return (
         <Container>
             <Card>
                 <div>
-                    <h1>New Mapper</h1>
-                    <h2>Configure your mapper</h2>
+                    <h1>New Subscriber</h1>
+                    <h2>Configure your Subscriber</h2>
                     <Divider />
                     <form className={style.form}>
                         <div className={style.field}>
@@ -137,90 +132,203 @@ export const MappersCreate: React.FC = () => {
                                 type="text"
                                 name="name"
                                 className={
-                                    mapperFormErrors.name.length > 0
+                                    subscriberFormErrors.name.length > 0
                                         ? style.inputError
                                         : style.input
                                 }
                                 autoComplete="off"
-                                value={mappersForm.name}
+                                value={subscriberForm.name}
                                 onChange={(e) =>
-                                    setMappersForm({
-                                        ...mappersForm,
+                                    setSubscriberForm({
+                                        ...subscriberForm,
                                         name: e.target.value,
                                     })
                                 }
                             ></input>
                             <div className={style.errorMessage}>
-                                {mapperFormErrors.name}
+                                {subscriberFormErrors.name}
                             </div>
                         </div>
-                        <div className={style.editors}>
-                            <div className={style.editor}>
-                                <div className={style.label}>From</div>
-                                <Editor
-                                    value={mappersForm.sample}
-                                    onChange={(content) =>
-                                        onBaseFormatChange(content)
-                                    }
-                                    mode={'code'}
-                                    ace={aceEditor}
-                                    theme={'ace/theme/dracula'}
-                                    indentation={4}
-                                    mainMenuBar={false}
-                                    statusBar={false}
-                                />
-                            </div>
-                            <div
+                        <div className={style.field}>
+                            <label>Webhook Url</label>
+                            <input
+                                type="text"
+                                name="webhookurl"
                                 className={
-                                    mapperFormErrors.format.length > 0
-                                        ? style.editorError
-                                        : style.editor
+                                    subscriberFormErrors.name.length > 0
+                                        ? style.inputError
+                                        : style.input
                                 }
-                            >
-                                <div className={style.label}>To</div>
-                                <Editor
-                                    onChange={(content) =>
-                                        onMapperFormatChange(content)
-                                    }
-                                    value={mappersForm.format}
-                                    navigationBar={false}
-                                    mainMenuBar={false}
-                                    statusBar={false}
-                                    mode={'code'}
-                                    theme={'ace/theme/dracula'}
-                                    indentation={4}
-                                    onValidationError={(error) => {
-                                        if (error.length < 1) {
-                                            setMapperFormErrors({
-                                                ...mapperFormErrors,
-                                                format: '',
-                                            });
-                                        } else {
-                                            setMapperFormErrors({
-                                                ...mapperFormErrors,
-                                                format: 'Invalid JSON provided',
-                                            });
-                                        }
-                                    }}
-                                    ace={aceEditor}
-                                />
-                                <div className={style.errorMessage}>
-                                    {mapperFormErrors.format}
-                                </div>
+                                autoComplete="off"
+                                value={subscriberForm.webhookUrl}
+                                onChange={(e) =>
+                                    setSubscriberForm({
+                                        ...subscriberForm,
+                                        webhookUrl: e.target.value,
+                                    })
+                                }
+                            ></input>
+                            <div className={style.errorMessage}>
+                                {subscriberFormErrors.name}
                             </div>
-                            <div className={style.editor}>
-                                <div className={style.label}>Result</div>
-                                <Editor
-                                    key={JSON.stringify(transformedFormat)}
-                                    value={transformedFormat}
-                                    ace={readOnlyAceFactory}
-                                    mode={'code'}
-                                    theme={'ace/theme/dracula'}
-                                    mainMenuBar={false}
-                                    indentation={4}
-                                    statusBar={false}
-                                />
+                        </div>
+                        <div className={style.field}>
+                            <div className={style.button}>
+                                <Button handleClick={(e) => addSubscription(e)}>
+                                    Add Subscriber
+                                </Button>
                             </div>
+                        </div>
+                        <div className={style.subscriptions}>
+                            {subscriberForm.subscribedTo.map(
+                                (
+                                    subscription: SubscribedPublisher,
+                                    index: number,
+                                ) => {
+                                    return (
+                                        <div
+                                            className={style.selects}
+                                            key={index}
+                                        >
+                                            <div className={style.field}>
+                                                <label>Publisher</label>
+                                                {publishersState.state ===
+                                                    'loading' && (
+                                                    <div>Loading...</div>
+                                                )}
+                                                {publishersState.state ===
+                                                    'hasValue' && (
+                                                    <select
+                                                        value={
+                                                            subscriberForm
+                                                                .subscribedTo[
+                                                                index
+                                                            ].publisherId
+                                                        }
+                                                        onChange={(e) => {
+                                                            setSubscriberForm({
+                                                                ...subscriberForm,
+                                                                subscribedTo: [
+                                                                    ...subscriberForm.subscribedTo.slice(
+                                                                        0,
+                                                                        index,
+                                                                    ),
+                                                                    {
+                                                                        ...subscriberForm
+                                                                            .subscribedTo[
+                                                                            index
+                                                                        ],
+                                                                        publisherId:
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                    },
+                                                                    ...subscriberForm.subscribedTo.slice(
+                                                                        index +
+                                                                            1,
+                                                                    ),
+                                                                ],
+                                                            });
+                                                        }}
+                                                    >
+                                                        {publishersState.contents.map(
+                                                            (
+                                                                publisher: Publisher,
+                                                                key: number,
+                                                            ) => {
+                                                                return (
+                                                                    <option
+                                                                        key={index
+                                                                            .toString()
+                                                                            .concat(
+                                                                                key.toString(),
+                                                                            )}
+                                                                        value={
+                                                                            publisher.id
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            publisher.name
+                                                                        }
+                                                                    </option>
+                                                                );
+                                                            },
+                                                        )}
+                                                    </select>
+                                                )}
+                                            </div>
+                                            <div className={style.field}>
+                                                <label>Mapper</label>
+
+                                                {mappersState.state ===
+                                                    'loading' && (
+                                                    <div>Loading...</div>
+                                                )}
+                                                {mappersState.state ===
+                                                    'hasValue' && (
+                                                    <select
+                                                        value={
+                                                            subscriberForm
+                                                                .subscribedTo[
+                                                                index
+                                                            ].mapperId
+                                                        }
+                                                        onChange={(e) => {
+                                                            setSubscriberForm({
+                                                                ...subscriberForm,
+                                                                subscribedTo: [
+                                                                    ...subscriberForm.subscribedTo.slice(
+                                                                        0,
+                                                                        index,
+                                                                    ),
+                                                                    {
+                                                                        ...subscriberForm
+                                                                            .subscribedTo[
+                                                                            index
+                                                                        ],
+                                                                        mapperId:
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                    },
+                                                                    ...subscriberForm.subscribedTo.slice(
+                                                                        index +
+                                                                            1,
+                                                                    ),
+                                                                ],
+                                                            });
+                                                        }}
+                                                    >
+                                                        {mappersState.contents.map(
+                                                            (
+                                                                mapper: Mapper,
+                                                                key: number,
+                                                            ) => {
+                                                                return (
+                                                                    <option
+                                                                        key={index
+                                                                            .toString()
+                                                                            .concat(
+                                                                                key.toString(),
+                                                                            )}
+                                                                        value={
+                                                                            mapper.id
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            mapper.name
+                                                                        }
+                                                                    </option>
+                                                                );
+                                                            },
+                                                        )}
+                                                    </select>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                },
+                            )}
                         </div>
                         <div className={style.button}>
                             <Button handleClick={(e) => submitForm(e)}>
@@ -234,4 +342,4 @@ export const MappersCreate: React.FC = () => {
     );
 };
 
-export default MappersCreate;
+export default SubscribersCreate;

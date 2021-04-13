@@ -1,8 +1,8 @@
 import { selector, selectorFamily } from 'recoil';
-import { fromDictionary } from '../../utils/parsers';
+import { fromDictionary, toDictionary } from '../../utils/parsers';
 import { Dictionary } from '../../utils/types';
 import { publishers } from './atom';
-import { getPublisherByIdQuery } from './requests';
+import { getPublisherByIdQuery, getPublishersQuery } from './requests';
 import { Publisher } from './types';
 
 export const publishersSelector = selector<Publisher[]>({
@@ -15,7 +15,10 @@ export const publishersSelector = selector<Publisher[]>({
 
 export const publishersByIdSelector = selectorFamily({
     key: 'publishersByIdSelector',
-    get: (id: string) => async ({ get }) => {
+    get: (id: string | null) => async ({ get }) => {
+        if (!id) {
+            return null;
+        }
         const publisher = get(publishers)[id];
         if (publisher) {
             return publisher;
@@ -26,5 +29,20 @@ export const publishersByIdSelector = selectorFamily({
     set: (id: string) => ({ set }, newValue: any) =>
         set(publishers, (prevState: Dictionary<Publisher>) => {
             return { ...prevState, [id]: newValue };
+        }),
+});
+
+export const publishersQuerySelector = selector({
+    key: 'publishersQuerySelector',
+    get: async () => {
+        return await getPublishersQuery();
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    set: () => ({ set }, newValue: Publisher[]) =>
+        set(publishers, (prevState: Dictionary<Publisher>) => {
+            return {
+                ...prevState,
+                ...toDictionary(newValue, 'id'),
+            };
         }),
 });

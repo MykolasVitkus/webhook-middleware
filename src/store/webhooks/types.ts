@@ -1,3 +1,6 @@
+import { Publisher } from '../publishers/types';
+import { Subscriber } from '../subscribers/types';
+
 export interface Webhook {
     id: string;
     type: string;
@@ -5,6 +8,18 @@ export interface Webhook {
     payload: unknown;
     publisherId: string | null;
     subscriberId: string | null;
+    createdAt: Date;
+    metadata: ResponseType | null;
+    prevEvent: Webhook | null;
+}
+
+export interface WebhookLoaded {
+    id: string;
+    type: string;
+    status: string;
+    payload: unknown;
+    publisher: Publisher | null;
+    subscriber: Subscriber | null;
     createdAt: Date;
     metadata: ResponseType | null;
     prevEvent: Webhook | null;

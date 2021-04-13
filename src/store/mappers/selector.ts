@@ -1,8 +1,8 @@
 import { selector, selectorFamily } from 'recoil';
-import { fromDictionary } from '../../utils/parsers';
+import { fromDictionary, toDictionary } from '../../utils/parsers';
 import { Dictionary } from '../../utils/types';
 import { mappers } from './atom';
-import { getMapperByIdQuery } from './requests';
+import { getMapperByIdQuery, getMappersQuery } from './requests';
 import { Mapper } from './types';
 
 export const mappersSelector = selector<Mapper[]>({
@@ -11,6 +11,21 @@ export const mappersSelector = selector<Mapper[]>({
         const mappersList = get(mappers);
         return fromDictionary(mappersList);
     },
+});
+
+export const mappersQuerySelector = selector({
+    key: 'mappersQuerySelector',
+    get: async () => {
+        return await getMappersQuery();
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    set: () => ({ set }, newValue: Mapper[]) =>
+        set(mappers, (prevState: Dictionary<Mapper>) => {
+            return {
+                ...prevState,
+                ...toDictionary(newValue, 'id'),
+            };
+        }),
 });
 
 export const mappersByIdSelector = selectorFamily({

@@ -63,3 +63,21 @@
 .jsonEditor {
     height: 100%;
 }
+
+.subscriptions {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.selects {
+    margin-right: 1rem;
+    padding: 1rem;
+    border: 1px solid $navColor;
+    min-height: 0;
+    border-radius: 2px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    // display: flex;
+}

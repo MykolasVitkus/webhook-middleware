@@ -84,7 +84,7 @@ export const PublisherWebhooksList: React.FC<PublisherWebhooksListProps> = (
                         <Divider />
                         <div className={style.payload}>
                             <Editor
-                                value={webhook.payload}
+                                value={webhook.payload ?? {}}
                                 navigationBar={false}
                                 mainMenuBar={false}
                                 statusBar={false}

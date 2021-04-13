@@ -26,7 +26,7 @@ export const DeleteModal: React.FC = () => {
 
     const [subscribersState, setSubscribers] = useRecoilState(subscribers);
 
-    const deleteSubscriber = (id) => {
+    const deleteSubscriber = (id: string) => {
         deleteSubscriberQuery(id);
         setSubscribers(
             toDictionary(

@@ -14,6 +14,7 @@ import MappersView from './containers/mappers/view';
 import MappersEdit from './containers/mappers/edit';
 import Subscribers from './containers/subscribers/list';
 import { SubscribersView } from './containers/subscribers/view';
+import SubscribersCreate from './containers/subscribers/create';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App() {
@@ -52,7 +53,7 @@ function App() {
                             <Subscribers />
                         </Route>
                         <Route exact path={Routes.SubscribersNew}>
-                            <Subscribers />
+                            <SubscribersCreate />
                         </Route>
                         <Route exact path={Routes.SubscribersEdit}>
                             <Subscribers />

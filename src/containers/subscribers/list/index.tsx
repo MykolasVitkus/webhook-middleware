@@ -67,7 +67,9 @@ const Subscribers: React.FC = () => {
                     </div>
                     <div>
                         <Button
-                            handleClick={() => changeRoute(Routes.MappersNew)}
+                            handleClick={() =>
+                                changeRoute(Routes.SubscribersNew)
+                            }
                         >
                             <FaPlus className={style.iconMargin}></FaPlus>
                             New
