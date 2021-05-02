@@ -1,6 +1,11 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
 import Navbar from './components/navbar';
 import Publishers from './containers/publishers/list';
 import Routes from './utils/routes';
@@ -20,59 +25,77 @@ import PrivateRoute from './components/privateRoute';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App() {
-    const token = localStorage.getItem('access_token');
+    const LoginContainer = () => (
+        <div>
+            <Route
+                exact
+                path="/"
+                render={() => <Redirect to={Routes.Login} />}
+            />
+            <Route exact path={Routes.Login}>
+                <LoginForm />
+            </Route>
+        </div>
+    );
+
+    const DefaultContainer = () => (
+        <div className={styles.App}>
+            <Navbar />
+            <Switch>
+                <PrivateRoute exact path={Routes.Dashboard}>
+                    Dashboard
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.Publishers}>
+                    <Publishers />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.PublishersNew}>
+                    <PublishersNew />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.PublishersEdit}>
+                    <PublishersEdit />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.PublishersView}>
+                    <PublisherView />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.Mappers}>
+                    <Mappers />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.MappersNew}>
+                    <MappersCreate />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.MappersEdit}>
+                    <MappersEdit />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.MappersView}>
+                    <MappersView />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.Subscribers}>
+                    <Subscribers />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.SubscribersNew}>
+                    <SubscribersCreate />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.SubscribersEdit}>
+                    <Subscribers />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.SubscribersView}>
+                    <SubscribersView />
+                </PrivateRoute>
+            </Switch>
+        </div>
+    );
 
     return (
         <RecoilRoot>
             <Router>
-                <Route exact path={Routes.Login}>
-                    <LoginForm />
-                </Route>
-                <div className={styles.App}>
-                    <Navbar />
-
-                    <Switch>
-                        <PrivateRoute exact path={Routes.Dashboard}>
-                            Dashboard
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.Publishers}>
-                            <Publishers />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.PublishersNew}>
-                            <PublishersNew />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.PublishersEdit}>
-                            <PublishersEdit />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.PublishersView}>
-                            <PublisherView />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.Mappers}>
-                            <Mappers />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.MappersNew}>
-                            <MappersCreate />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.MappersEdit}>
-                            <MappersEdit />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.MappersView}>
-                            <MappersView />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.Subscribers}>
-                            <Subscribers />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.SubscribersNew}>
-                            <SubscribersCreate />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.SubscribersEdit}>
-                            <Subscribers />
-                        </PrivateRoute>
-                        <PrivateRoute exact path={Routes.SubscribersView}>
-                            <SubscribersView />
-                        </PrivateRoute>
-                    </Switch>
-                </div>
+                <Switch>
+                    <Route
+                        exact
+                        path={Routes.Login}
+                        component={LoginContainer}
+                    />
+                    <Route component={DefaultContainer} />
+                </Switch>
             </Router>
         </RecoilRoot>
     );
