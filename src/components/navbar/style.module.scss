@@ -10,6 +10,9 @@ $activeNavItem: rgba(#fff, 0.1);
     width: 250px;
     // border-right: 1px solid $shadeColor;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .logo {

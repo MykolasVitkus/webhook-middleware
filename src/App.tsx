@@ -15,52 +15,62 @@ import MappersEdit from './containers/mappers/edit';
 import Subscribers from './containers/subscribers/list';
 import { SubscribersView } from './containers/subscribers/view';
 import SubscribersCreate from './containers/subscribers/create';
+import { LoginForm } from './containers/login/form';
+import PrivateRoute from './components/privateRoute';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App() {
+    const token = localStorage.getItem('access_token');
+
     return (
         <RecoilRoot>
             <Router>
+                <Route exact path={Routes.Login}>
+                    <LoginForm />
+                </Route>
                 <div className={styles.App}>
                     <Navbar />
 
                     <Switch>
-                        <Route exact path={Routes.Publishers}>
+                        <PrivateRoute exact path={Routes.Dashboard}>
+                            Dashboard
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.Publishers}>
                             <Publishers />
-                        </Route>
-                        <Route exact path={Routes.PublishersNew}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.PublishersNew}>
                             <PublishersNew />
-                        </Route>
-                        <Route exact path={Routes.PublishersEdit}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.PublishersEdit}>
                             <PublishersEdit />
-                        </Route>
-                        <Route exact path={Routes.PublishersView}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.PublishersView}>
                             <PublisherView />
-                        </Route>
-                        <Route exact path={Routes.Mappers}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.Mappers}>
                             <Mappers />
-                        </Route>
-                        <Route exact path={Routes.MappersNew}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.MappersNew}>
                             <MappersCreate />
-                        </Route>
-                        <Route exact path={Routes.MappersEdit}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.MappersEdit}>
                             <MappersEdit />
-                        </Route>
-                        <Route exact path={Routes.MappersView}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.MappersView}>
                             <MappersView />
-                        </Route>
-                        <Route exact path={Routes.Subscribers}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.Subscribers}>
                             <Subscribers />
-                        </Route>
-                        <Route exact path={Routes.SubscribersNew}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.SubscribersNew}>
                             <SubscribersCreate />
-                        </Route>
-                        <Route exact path={Routes.SubscribersEdit}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.SubscribersEdit}>
                             <Subscribers />
-                        </Route>
-                        <Route exact path={Routes.SubscribersView}>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={Routes.SubscribersView}>
                             <SubscribersView />
-                        </Route>
+                        </PrivateRoute>
                     </Switch>
                 </div>
             </Router>

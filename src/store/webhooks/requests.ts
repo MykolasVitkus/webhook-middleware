@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { getToken } from '../auth/service';
 import { Webhook, WebhookDTO } from './types';
 
 interface GetWebhooksResponse extends AxiosResponse {
@@ -13,7 +14,11 @@ export const getPublishedWebhooksByPublisherIdQuery: (
     id: string,
 ) => Promise<Webhook[]> = (id: string) =>
     axios
-        .get('/api/domain-events/publisher/' + id + '/published-webhooks/')
+        .get('/api/domain-events/publisher/' + id + '/published-webhooks/', {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
         .then((res: GetWebhooksResponse) => {
             return res.data.map((val: WebhookDTO) => {
                 return {
@@ -34,7 +39,11 @@ export const getReceivedWebhooksBySubscriberIdQuery: (
     id: string,
 ) => Promise<Webhook[]> = (id: string) =>
     axios
-        .get('/api/domain-events/subscriber/' + id + '/received-webhooks/')
+        .get('/api/domain-events/subscriber/' + id + '/received-webhooks/', {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
         .then((res: GetWebhooksResponse) => {
             return res.data.map((val: WebhookDTO) => {
                 return {
@@ -55,7 +64,11 @@ export const resendWebhookQuery: (id: string) => Promise<Webhook> = (
     id: string,
 ) =>
     axios
-        .post('/api/domain-events/retry/' + id)
+        .post('/api/domain-events/retry/' + id, {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
         .then((res: GetWebhookResponse) => {
             return {
                 id: res.data._id,

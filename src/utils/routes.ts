@@ -1,4 +1,5 @@
 enum Routes {
+    Login = '/login',
     Dashboard = '/',
     Publishers = '/publishers',
     PublishersNew = '/publishers/new',
@@ -12,6 +13,7 @@ enum Routes {
     MappersNew = '/mappers/new',
     MappersView = '/mappers/:id',
     MappersEdit = '/mappers/:id/edit',
+    History = '/history',
 }
 
 export default Routes;
