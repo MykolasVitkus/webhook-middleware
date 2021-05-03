@@ -7,7 +7,6 @@ require('dotenv-flow').config();
 
 const app = express();
 
-
 const PORT = 3000;
 
 const options = {
