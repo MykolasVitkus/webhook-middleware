@@ -10,4 +10,4 @@ RUN yarn install
 
 RUN yarn build
 
-ENTRYPOINT [ "yarn", "start" ]
+ENTRYPOINT [ "node", "server/index.js" ]
