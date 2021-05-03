@@ -13,7 +13,8 @@ const options = {
     router: function(req) {
         return {
             protocol: '',
-            host: process.env.SERVER_URL
+            host: process.env.SERVER_URL,
+            port: 3001,
         }
     },
     target: process.env.SERVER_URL,
