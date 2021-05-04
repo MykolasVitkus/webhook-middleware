@@ -10,13 +10,6 @@ const app = express();
 const PORT = 3000;
 
 const options = {
-    router: function(req) {
-        return {
-            protocol: '',
-            host: process.env.SERVER_URL,
-            port: 3001,
-        }
-    },
     target: process.env.SERVER_URL,
     changeOrigin: true,
     pathRewrite: {
@@ -25,23 +18,6 @@ const options = {
     ws: true,
 };
 const buildPath = resolve(__dirname, '../build');
-
-// const proxy = {devServer: {
-//     https: {
-//       spdy: {
-//         protocols: ['http/1.1'],
-//       },
-//     },
-//     proxy: {
-//       '/my-backend': {
-//         changeOrigin: true,
-//         pathRewrite: {'^/my-backend': ''},
-//         target: myBackendUrl,
-//         ws: true,
-//       },
-//     },
-//   }
-// };
 
 const staticConf = {
     maxAge: '1y',
