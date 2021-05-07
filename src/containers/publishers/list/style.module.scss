@@ -32,3 +32,25 @@
     flex-direction: row;
     justify-content: flex-end;
 }
+
+.urlTd {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
+}
+
+.clipboardButton {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    margin-right: 0.5rem;
+}
+
+.row {
+    display: flex;
+}

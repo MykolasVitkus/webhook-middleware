@@ -10,9 +10,9 @@ import Button from '../../../components/button';
 import { FaPlus } from 'react-icons/fa';
 import { Publisher } from '../../../store/publishers/types';
 import { useRecoilState } from 'recoil';
-import { createMapperFormat } from '../../../store/mappers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
+import { createMapperForm } from '../../../store/mappers/atom';
 
 interface PublisherWebhooksListProps {
     data: Webhook[];
@@ -25,7 +25,7 @@ export const PublisherWebhooksList: React.FC<PublisherWebhooksListProps> = (
     const webhooks = props.data;
     const publisher = props.publisher;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [fromFormat, setFromFormat] = useRecoilState(createMapperFormat);
+    const [mapperForm, setMapperForm] = useRecoilState(createMapperForm);
 
     const history = useHistory();
 
@@ -69,7 +69,10 @@ export const PublisherWebhooksList: React.FC<PublisherWebhooksListProps> = (
                                 <Button
                                     style={style.button}
                                     handleClick={() => {
-                                        setFromFormat(webhook.payload);
+                                        setMapperForm({
+                                            ...mapperForm,
+                                            sample: webhook.payload,
+                                        });
                                         changeRoute(Routes.MappersNew);
                                     }}
                                 >

@@ -17,6 +17,7 @@ import { MapperForm } from '../../../store/mappers/types';
 import jsonpathObjectTransform from '../../../lib/jsonpath-object-transform';
 import 'brace/theme/dracula';
 import 'jsoneditor-react/es/editor.min.css';
+import { ControlledJsonEditor } from '../../../components/editor';
 
 export const MappersCreate: React.FC = () => {
     const history = useHistory();
@@ -104,6 +105,7 @@ export const MappersCreate: React.FC = () => {
         edit: (domElement) => {
             const editor = ace.edit(domElement);
             setTimeout(() => {
+                editor.setStyle(style.ace);
                 editor.setReadOnly(true);
                 editor.setHighlightActiveLine(false);
                 editor.setOption('highlightGutterLine', false);
@@ -116,6 +118,7 @@ export const MappersCreate: React.FC = () => {
         edit: (domElement) => {
             const editor = ace.edit(domElement);
             setTimeout(() => {
+                editor.setStyle(style.ace);
                 editor.setHighlightActiveLine(false);
                 editor.setOption('highlightGutterLine', false);
             });
@@ -157,7 +160,7 @@ export const MappersCreate: React.FC = () => {
                         <div className={style.editors}>
                             <div className={style.editor}>
                                 <div className={style.label}>From</div>
-                                <Editor
+                                <ControlledJsonEditor
                                     value={mappersForm.sample}
                                     onChange={(content) =>
                                         onBaseFormatChange(content)

@@ -5,7 +5,7 @@ import style from './style.module.scss';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaCopy, FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
 import { toDictionary } from '../../../utils/parsers';
@@ -17,6 +17,7 @@ import {
 } from '../../../store/subscribers/atom';
 import { getSubscribersQuery } from '../../../store/subscribers/requests';
 import { subscribersSelector } from '../../../store/subscribers/selector';
+import Clipboard from 'react-clipboard.js';
 
 const Subscribers: React.FC = () => {
     const history = useHistory();
@@ -100,7 +101,21 @@ const Subscribers: React.FC = () => {
                                 return (
                                     <tr key={val.id}>
                                         <td>{val.name}</td>
-                                        <td>{val.webhookUrl}</td>
+                                        <td className={style.row}>
+                                            <Clipboard
+                                                className={
+                                                    style.clipboardButton
+                                                }
+                                                data-clipboard-text={
+                                                    val.webhookUrl
+                                                }
+                                            >
+                                                <FaCopy />
+                                            </Clipboard>
+                                            <div className={style.urlTd}>
+                                                {val.webhookUrl}
+                                            </div>
+                                        </td>
                                         <td>{val.createdAt.toDateString()}</td>
                                         <td className={style.actions}>
                                             <Button

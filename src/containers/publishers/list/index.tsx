@@ -6,7 +6,7 @@ import { publishers } from '../../../store/publishers';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaCopy, FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { getPublishersQuery } from '../../../store/publishers/requests';
 import {
     deletePublisherModal,
@@ -17,6 +17,7 @@ import Routes from '../../../utils/routes';
 import { publishersSelector } from '../../../store/publishers/selector';
 import { toDictionary } from '../../../utils/parsers';
 import { DeleteModal } from '../modal';
+import Clipboard from 'react-clipboard.js';
 
 const Publishers: React.FC = () => {
     const history = useHistory();
@@ -100,12 +101,28 @@ const Publishers: React.FC = () => {
                                 return (
                                     <tr key={val.id}>
                                         <td>{val.name}</td>
-                                        <td>
-                                            {window.location.protocol +
-                                                '//' +
-                                                window.location.host +
-                                                '/api/webhooks/' +
-                                                val.id}
+                                        <td className={style.row}>
+                                            <Clipboard
+                                                className={
+                                                    style.clipboardButton
+                                                }
+                                                data-clipboard-text={
+                                                    window.location.protocol +
+                                                    '//' +
+                                                    window.location.host +
+                                                    '/api/webhooks/' +
+                                                    val.id
+                                                }
+                                            >
+                                                <FaCopy />
+                                            </Clipboard>
+                                            <div className={style.urlTd}>
+                                                {window.location.protocol +
+                                                    '//' +
+                                                    window.location.host +
+                                                    '/api/webhooks/' +
+                                                    val.id}
+                                            </div>
                                         </td>
                                         <td>{val.createdAt.toDateString()}</td>
                                         <td className={style.actions}>
