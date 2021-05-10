@@ -6,6 +6,7 @@ import Button from '../../../components/button';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import Divider from '../../../components/divider';
+import Loader from '../../../components/loader';
 import { deleteSubscriberModal } from '../../../store/subscribers/atom';
 import { subscribersByIdSelector } from '../../../store/subscribers/selector';
 import { receivedWebhooksSelector } from '../../../store/webhooks/selector';
@@ -46,7 +47,7 @@ export const SubscribersView: React.FC = () => {
             <Card>
                 <DeleteModal />
 
-                {subscriber.state === 'loading' && <div>Loading</div>}
+                {subscriber.state === 'loading' && <Loader />}
                 {subscriber.state === 'hasValue' && (
                     <div>
                         <div className={style.flex}>
@@ -88,9 +89,7 @@ export const SubscribersView: React.FC = () => {
                         </div>
 
                         <Divider />
-                        {receivedWebhooks.state === 'loading' && (
-                            <div>Loading</div>
-                        )}
+                        {receivedWebhooks.state === 'loading' && <Loader />}
                         {receivedWebhooks.state === 'hasValue' && (
                             <SubscriberWebhooksList
                                 data={receivedWebhooks.contents}

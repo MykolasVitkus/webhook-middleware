@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
+import { setupInterceptorsTo } from '../../interceptors';
 import { getToken } from '../auth/service';
 import { Subscriber, SubscriberDTO, SubscriberForm } from './types';
+
+const axiosInstance = setupInterceptorsTo(axios.create());
 
 interface GetSubscribersResponse extends AxiosResponse {
     data: SubscriberDTO[];
@@ -11,7 +14,7 @@ interface GetSubscriberResponse extends AxiosResponse {
 }
 
 export const getSubscribersQuery: () => Promise<Subscriber[]> = () =>
-    axios
+    axiosInstance
         .get('/api/subscribers', {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -32,7 +35,7 @@ export const getSubscribersQuery: () => Promise<Subscriber[]> = () =>
 export const getSubscriberByIdQuery: (id: string) => Promise<Subscriber> = (
     id: string,
 ) =>
-    axios
+    axiosInstance
         .get('/api/subscribers/' + id, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -51,7 +54,7 @@ export const getSubscriberByIdQuery: (id: string) => Promise<Subscriber> = (
 export const createSubscriberQuery: (
     body: SubscriberForm,
 ) => Promise<Subscriber> = (body: SubscriberForm) =>
-    axios
+    axiosInstance
         .post('/api/subscribers', body, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -71,7 +74,7 @@ export const editSubscriberQuery: (
     body: SubscriberForm,
     id: string,
 ) => Promise<Subscriber> = (body: SubscriberForm, id: string) =>
-    axios
+    axiosInstance
         .put('/api/subscribers/' + id, body, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -88,7 +91,7 @@ export const editSubscriberQuery: (
         });
 
 export const deleteSubscriberQuery: (id: string) => void = (id: string) =>
-    axios.delete('/api/subscribers/' + id, {
+    axiosInstance.delete('/api/subscribers/' + id, {
         headers: {
             Authorization: 'Bearer '.concat(getToken() as string),
         },

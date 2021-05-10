@@ -18,6 +18,7 @@ import { publishersSelector } from '../../../store/publishers/selector';
 import { toDictionary } from '../../../utils/parsers';
 import { DeleteModal } from '../modal';
 import Clipboard from 'react-clipboard.js';
+import Loader from '../../../components/loader';
 
 const Publishers: React.FC = () => {
     const history = useHistory();
@@ -79,7 +80,7 @@ const Publishers: React.FC = () => {
                 </div>
 
                 <Divider />
-                {!isLoaded && <div>Loading</div>}
+                {!isLoaded && <Loader />}
                 {isLoaded && (
                     <table className={style.table}>
                         <thead>

@@ -24,6 +24,7 @@ import { createSubscriberQuery } from '../../../store/subscribers/requests';
 import { mappersQuerySelector } from '../../../store/mappers/selector';
 import { publishersQuerySelector } from '../../../store/publishers/selector';
 import { Publisher } from '../../../store/publishers/types';
+import Loader from '../../../components/loader';
 
 export const SubscribersCreate: React.FC = () => {
     const history = useHistory();
@@ -193,9 +194,7 @@ export const SubscribersCreate: React.FC = () => {
                                             <div className={style.field}>
                                                 <label>Publisher</label>
                                                 {publishersState.state ===
-                                                    'loading' && (
-                                                    <div>Loading...</div>
-                                                )}
+                                                    'loading' && <Loader />}
                                                 {publishersState.state ===
                                                     'hasValue' && (
                                                     <select
@@ -261,9 +260,7 @@ export const SubscribersCreate: React.FC = () => {
                                                 <label>Mapper</label>
 
                                                 {mappersState.state ===
-                                                    'loading' && (
-                                                    <div>Loading...</div>
-                                                )}
+                                                    'loading' && <Loader />}
                                                 {mappersState.state ===
                                                     'hasValue' && (
                                                     <select

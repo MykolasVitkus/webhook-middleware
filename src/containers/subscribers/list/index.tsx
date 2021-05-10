@@ -18,6 +18,7 @@ import {
 import { getSubscribersQuery } from '../../../store/subscribers/requests';
 import { subscribersSelector } from '../../../store/subscribers/selector';
 import Clipboard from 'react-clipboard.js';
+import Loader from '../../../components/loader';
 
 const Subscribers: React.FC = () => {
     const history = useHistory();
@@ -79,7 +80,7 @@ const Subscribers: React.FC = () => {
                 </div>
 
                 <Divider />
-                {!isLoaded && <div>Loading</div>}
+                {!isLoaded && <Loader />}
                 {isLoaded && (
                     <table className={style.table}>
                         <thead>

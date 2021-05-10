@@ -20,6 +20,7 @@ import { MapperForm } from '../../../store/mappers/types';
 import jsonpathObjectTransform from '../../../lib/jsonpath-object-transform';
 import 'brace/theme/dracula';
 import 'jsoneditor-react/es/editor.min.css';
+import Loader from '../../../components/loader';
 
 export const MappersEdit: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -155,7 +156,7 @@ export const MappersEdit: React.FC = () => {
     return (
         <Container>
             <Card>
-                {!isLoaded && <div>Loading...</div>}
+                {!isLoaded && <Loader />}
                 {isLoaded && (
                     <div>
                         <h1>Edit Mapper</h1>

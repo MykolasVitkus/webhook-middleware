@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
+import { setupInterceptorsTo } from '../../interceptors';
 import { getToken } from '../auth/service';
 import { Webhook, WebhookDTO } from './types';
+
+const axiosInstance = setupInterceptorsTo(axios.create());
 
 interface GetWebhooksResponse extends AxiosResponse {
     data: WebhookDTO[];
@@ -13,7 +16,7 @@ interface GetWebhookResponse extends AxiosResponse {
 export const getPublishedWebhooksByPublisherIdQuery: (
     id: string,
 ) => Promise<Webhook[]> = (id: string) =>
-    axios
+    axiosInstance
         .get('/api/domain-events/publisher/' + id + '/published-webhooks/', {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -38,7 +41,7 @@ export const getPublishedWebhooksByPublisherIdQuery: (
 export const getReceivedWebhooksBySubscriberIdQuery: (
     id: string,
 ) => Promise<Webhook[]> = (id: string) =>
-    axios
+    axiosInstance
         .get('/api/domain-events/subscriber/' + id + '/received-webhooks/', {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -63,7 +66,7 @@ export const getReceivedWebhooksBySubscriberIdQuery: (
 export const resendWebhookQuery: (id: string) => Promise<Webhook> = (
     id: string,
 ) =>
-    axios
+    axiosInstance
         .post('/api/domain-events/retry/' + id, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),

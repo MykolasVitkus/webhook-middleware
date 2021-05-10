@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
+import { setupInterceptorsTo } from '../../interceptors';
 import { getToken } from '../auth/service';
 import { Mapper, MapperDTO, MapperForm } from './types';
+
+const axiosInstance = setupInterceptorsTo(axios.create());
 
 interface GetMappersResponse extends AxiosResponse {
     data: MapperDTO[];
@@ -11,7 +14,7 @@ interface GetMapperResponse extends AxiosResponse {
 }
 
 export const getMappersQuery: () => Promise<Mapper[]> = () =>
-    axios
+    axiosInstance
         .get('/api/mappers', {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -32,7 +35,7 @@ export const getMappersQuery: () => Promise<Mapper[]> = () =>
 export const getMapperByIdQuery: (id: string) => Promise<Mapper> = (
     id: string,
 ) =>
-    axios
+    axiosInstance
         .get('/api/mappers/' + id, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -51,7 +54,7 @@ export const getMapperByIdQuery: (id: string) => Promise<Mapper> = (
 export const createMapperQuery: (body: MapperForm) => Promise<Mapper> = (
     body: MapperForm,
 ) =>
-    axios
+    axiosInstance
         .post('/api/mappers', body, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -71,7 +74,7 @@ export const editMapperQuery: (
     body: MapperForm,
     id: string,
 ) => Promise<Mapper> = (body: MapperForm, id: string) =>
-    axios
+    axiosInstance
         .put('/api/mappers/' + id, body, {
             headers: {
                 Authorization: 'Bearer '.concat(getToken() as string),
@@ -88,7 +91,7 @@ export const editMapperQuery: (
         });
 
 export const deleteMapperQuery: (id: string) => void = (id: string) =>
-    axios.delete('/api/mappers/' + id, {
+    axiosInstance.delete('/api/mappers/' + id, {
         headers: {
             Authorization: 'Bearer '.concat(getToken() as string),
         },

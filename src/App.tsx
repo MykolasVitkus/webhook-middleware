@@ -22,6 +22,8 @@ import { SubscribersView } from './containers/subscribers/view';
 import SubscribersCreate from './containers/subscribers/create';
 import { LoginForm } from './containers/login/form';
 import PrivateRoute from './components/privateRoute';
+import { Dashboard } from './containers/dashboard';
+import History from './containers/history';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App() {
@@ -43,7 +45,7 @@ function App() {
             <Navbar />
             <Switch>
                 <PrivateRoute exact path={Routes.Dashboard}>
-                    Dashboard
+                    <Dashboard />
                 </PrivateRoute>
                 <PrivateRoute exact path={Routes.Publishers}>
                     <Publishers />
@@ -80,6 +82,9 @@ function App() {
                 </PrivateRoute>
                 <PrivateRoute exact path={Routes.SubscribersView}>
                     <SubscribersView />
+                </PrivateRoute>
+                <PrivateRoute exact path={Routes.SubscribersView}>
+                    <History />
                 </PrivateRoute>
             </Switch>
         </div>

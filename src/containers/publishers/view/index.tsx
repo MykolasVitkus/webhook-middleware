@@ -6,6 +6,7 @@ import Button from '../../../components/button';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import Divider from '../../../components/divider';
+import Loader from '../../../components/loader';
 import { deletePublisherModal } from '../../../store/publishers/atom';
 import { publishersByIdSelector } from '../../../store/publishers/selector';
 import { publishedWebhooksSelector } from '../../../store/webhooks/selector';
@@ -46,7 +47,7 @@ export const PublisherView: React.FC = () => {
             <Card>
                 <DeleteModal />
 
-                {publisher.state === 'loading' && <div>Loading</div>}
+                {publisher.state === 'loading' && <Loader />}
                 {publisher.state === 'hasValue' && (
                     <div>
                         <div className={style.flex}>
@@ -88,9 +89,7 @@ export const PublisherView: React.FC = () => {
                         </div>
 
                         <Divider />
-                        {publishedWebhooks.state === 'loading' && (
-                            <div>Loading</div>
-                        )}
+                        {publishedWebhooks.state === 'loading' && <Loader />}
                         {publishedWebhooks.state === 'hasValue' && (
                             <PublisherWebhooksList
                                 data={publishedWebhooks.contents}

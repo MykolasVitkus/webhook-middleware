@@ -14,6 +14,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import Routes from '../../../utils/routes';
 import { PublisherForm } from '../../../store/publishers/types';
 import { publishers } from '../../../store/publishers/atom';
+import Loader from '../../../components/loader';
 
 export const PublishersEdit: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -99,7 +100,7 @@ export const PublishersEdit: React.FC = () => {
     return (
         <Container>
             <Card>
-                {!isLoaded && <div>Loading</div>}
+                {!isLoaded && <Loader />}
                 {isLoaded && (
                     <div>
                         <h1>Edit Publisher</h1>

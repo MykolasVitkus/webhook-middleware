@@ -17,6 +17,7 @@ import { DeleteModal } from '../modal';
 import { getMappersQuery } from '../../../store/mappers/requests';
 import { mappers } from '../../../store/mappers/atom';
 import { mappersSelector } from '../../../store/mappers/selector';
+import Loader from '../../../components/loader';
 
 const Mappers: React.FC = () => {
     const history = useHistory();
@@ -76,7 +77,7 @@ const Mappers: React.FC = () => {
                 </div>
 
                 <Divider />
-                {!isLoaded && <div>Loading</div>}
+                {!isLoaded && <Loader />}
                 {isLoaded && (
                     <table className={style.table}>
                         <thead>

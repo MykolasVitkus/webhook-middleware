@@ -18,6 +18,7 @@ import Routes from '../../../utils/routes';
 import { FaEdit } from 'react-icons/fa';
 import { deleteMapperModal } from '../../../store/mappers/atom';
 import { DeleteModal } from '../modal';
+import Loader from '../../../components/loader';
 
 export const MappersView: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,7 +61,7 @@ export const MappersView: React.FC = () => {
         <Container>
             <Card>
                 <DeleteModal />
-                {mapper.state === 'loading' && <div>Loading...</div>}
+                {mapper.state === 'loading' && <Loader />}
                 {mapper.state === 'hasValue' && (
                     <div>
                         <div className={style.flex}>
