@@ -31,3 +31,9 @@
     font-size: 2rem;
     font-weight: 400;
 }
+
+.webhookList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

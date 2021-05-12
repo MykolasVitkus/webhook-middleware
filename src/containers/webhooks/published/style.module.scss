@@ -1,0 +1,62 @@
+@import '../../../globals.module.scss';
+
+.webhook {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 300px;
+    background-color: $navColor;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-start;
+}
+.flexRow {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.webhookHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.webhookStatusSuccess {
+    border-radius: 6px;
+    background-color: rgb(67, 128, 67);
+    padding: 4px;
+    font-size: 13px;
+    color: white;
+    height: 1rem;
+    margin-left: 4px;
+}
+.iconMargin {
+    margin-right: 6px;
+}
+
+.button {
+    padding-left: 18px;
+    padding-right: 18px;
+    height: 32px;
+    box-shadow: none;
+    background-color: $backgroundColor;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid $navColor;
+    border-radius: 2px;
+    outline: none;
+    color: $primText;
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+}

@@ -25,6 +25,17 @@ export interface WebhookLoaded {
     prevEvent: Webhook | null;
 }
 
+export type Filters = {
+    offset: string | null;
+    limit: string | null;
+    type: string | null;
+    searchQuery: string | null;
+    searchProperty: string | null;
+    status: WebhookStatus | null;
+    orderField: string | null;
+    orderDirection: string | null;
+};
+
 export interface WebhookDTO {
     _id: string;
     type: string;

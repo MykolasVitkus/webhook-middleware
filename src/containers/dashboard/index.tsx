@@ -3,9 +3,10 @@ import {
     Area,
     AreaChart,
     CartesianGrid,
-    Line,
-    LineChart,
+    ComposedChart,
+    ReferenceLine,
     ResponsiveContainer,
+    Scatter,
     Tooltip,
     XAxis,
     YAxis,
@@ -16,72 +17,26 @@ import Container from '../../components/container';
 import Divider from '../../components/divider';
 import Loader from '../../components/loader';
 import { statisticsSelector } from '../../store/dashboard/selector';
+import { webhooksFilteredSelector } from '../../store/webhooks/selector';
+import { Webhook } from '../../store/webhooks/types';
+import PublishedWebhook from '../webhooks/published';
+import ReceivedWebhook from '../webhooks/received';
 import style from './style.module.scss';
 
 export const Dashboard: React.FC = () => {
     const statistics = useRecoilValueLoadable(statisticsSelector);
-
-    const data2 = [
-        {
-            name: '05-07',
-            received: 3,
-        },
-        {
-            name: '05-08',
-            received: 1,
-        },
-        {
-            name: '05-09',
-            received: 2,
-        },
-        {
-            name: '05-10',
-            received: 6,
-        },
-        {
-            name: '05-11',
-            received: 1,
-        },
-        {
-            name: '05-12',
-            received: 12,
-        },
-        {
-            name: '05-13',
-            received: 3,
-        },
-    ];
-
-    const data1 = [
-        {
-            name: '05-07',
-            sent: 3,
-        },
-        {
-            name: '05-08',
-            sent: 1,
-        },
-        {
-            name: '05-09',
-            sent: 2,
-        },
-        {
-            name: '05-10',
-            sent: 6,
-        },
-        {
-            name: '05-11',
-            sent: 1,
-        },
-        {
-            name: '05-12',
-            sent: 4,
-        },
-        {
-            name: '05-13',
-            sent: 3,
-        },
-    ];
+    const webhooks = useRecoilValueLoadable(
+        webhooksFilteredSelector({
+            offset: '0',
+            limit: '5',
+            type: null,
+            searchQuery: null,
+            searchProperty: null,
+            orderDirection: null,
+            orderField: null,
+            status: null,
+        }),
+    );
 
     return (
         <Container>
@@ -92,143 +47,203 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <Divider />
                 <div>
-                    <h1>Last Week</h1>
+                    <h2>Last Week</h2>
                 </div>
                 {statistics.state === 'loading' && <Loader />}
                 {statistics.state === 'hasValue' && (
-                    <div className={style.statistics}>
-                        <div className={style.statistic}>
-                            <div className={style.statisticValue}>
-                                {statistics.contents.received}
+                    <div>
+                        <div className={style.statistics}>
+                            <div className={style.statistic}>
+                                <div className={style.statisticValue}>
+                                    {statistics.contents.received}
+                                </div>
+                                <div className={style.statisticTitle}>
+                                    Received Webhooks
+                                </div>
                             </div>
-                            <div className={style.statisticTitle}>
-                                Received Webhooks
+                            <div className={style.statistic}>
+                                <div className={style.statisticValue}>
+                                    {statistics.contents.sent}
+                                </div>
+                                <div className={style.statisticTitle}>
+                                    Sent Webhooks
+                                </div>
+                            </div>
+                            <div className={style.statistic}>
+                                <div className={style.statisticValue}>
+                                    {statistics.contents.averageTime} ms
+                                </div>
+                                <div className={style.statisticTitle}>
+                                    Average time
+                                </div>
                             </div>
                         </div>
-                        <div className={style.statistic}>
-                            <div className={style.statisticValue}>
-                                {statistics.contents.sent}
+
+                        <div className={style.statistics}>
+                            <div className={style.statisticGraph}>
+                                <ResponsiveContainer
+                                    width="100%"
+                                    aspect={4.0 / 3.0}
+                                    min-height="300px"
+                                >
+                                    <AreaChart
+                                        data={statistics.contents.receivedDays}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <defs>
+                                            <linearGradient
+                                                id="colorReceived"
+                                                x1="0"
+                                                y1="0"
+                                                x2="0"
+                                                y2="1"
+                                            >
+                                                <stop
+                                                    offset="5%"
+                                                    stopColor="#8884d8"
+                                                    stopOpacity={0.8}
+                                                />
+                                                <stop
+                                                    offset="95%"
+                                                    stopColor="#8884d8"
+                                                    stopOpacity={0}
+                                                />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            stroke="#323743"
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="count"
+                                            stroke="#8884d8"
+                                            fillOpacity={1}
+                                            fill="url(#colorReceived)"
+                                        />
+                                        <Tooltip />
+                                        <XAxis dataKey="day" />
+                                        <YAxis allowDecimals={false} />
+                                    </AreaChart>
+                                </ResponsiveContainer>
                             </div>
-                            <div className={style.statisticTitle}>
-                                Sent Webhooks
+                            <div className={style.statisticGraph}>
+                                <ResponsiveContainer
+                                    width="100%"
+                                    aspect={4.0 / 3.0}
+                                    min-height="300px"
+                                >
+                                    <AreaChart
+                                        data={statistics.contents.sentDays}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <defs>
+                                            <linearGradient
+                                                id="colorSent"
+                                                x1="0"
+                                                y1="0"
+                                                x2="0"
+                                                y2="1"
+                                            >
+                                                <stop
+                                                    offset="5%"
+                                                    stopColor="#82ca9d"
+                                                    stopOpacity={0.8}
+                                                />
+                                                <stop
+                                                    offset="95%"
+                                                    stopColor="#82ca9d"
+                                                    stopOpacity={0}
+                                                />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            stroke="#323743"
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="count"
+                                            stroke="#82ca9d"
+                                            fillOpacity={1}
+                                            fill="url(#colorSent)"
+                                        />
+                                        <Tooltip />
+                                        <XAxis dataKey="day" />
+                                        <YAxis allowDecimals={false} />
+                                    </AreaChart>
+                                </ResponsiveContainer>
                             </div>
-                        </div>
-                        <div className={style.statistic}>
-                            <div className={style.statisticValue}>
-                                {statistics.contents.averageTime} ms
-                            </div>
-                            <div className={style.statisticTitle}>
-                                Average time
+                            <div className={style.statisticGraph}>
+                                <ResponsiveContainer
+                                    width="100%"
+                                    aspect={4.0 / 3.0}
+                                    min-height="300px"
+                                >
+                                    <ComposedChart
+                                        width={500}
+                                        height={400}
+                                        data={statistics.contents.executionTimes.map(
+                                            (_value, _index) => ({
+                                                index: _index,
+                                                value: _value,
+                                            }),
+                                        )}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            stroke="#323743"
+                                        />
+                                        <Tooltip />
+
+                                        <XAxis dataKey="index" type="number" />
+                                        <YAxis unit="ms" type="number" />
+                                        <Scatter
+                                            name="execution time"
+                                            dataKey="value"
+                                            fill="#82ca9d"
+                                        />
+                                        <ReferenceLine
+                                            y={statistics.contents.averageTime}
+                                            stroke="#ef767a"
+                                        />
+                                    </ComposedChart>
+                                </ResponsiveContainer>
                             </div>
                         </div>
                     </div>
                 )}
-                <div className={style.statistics}>
-                    <div className={style.statisticGraph}>
-                        <ResponsiveContainer
-                            width="100%"
-                            aspect={4.0 / 3.0}
-                            min-height="300px"
-                        >
-                            <AreaChart
-                                data={data2}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <defs>
-                                    <linearGradient
-                                        id="colorReceived"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop
-                                            offset="5%"
-                                            stopColor="#8884d8"
-                                            stopOpacity={0.8}
-                                        />
-                                        <stop
-                                            offset="95%"
-                                            stopColor="#8884d8"
-                                            stopOpacity={0}
-                                        />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid
-                                    strokeDasharray="3 3"
-                                    stroke="#323743"
-                                />
-                                <Area
-                                    type="monotone"
-                                    dataKey="received"
-                                    stroke="#8884d8"
-                                    fillOpacity={1}
-                                    fill="url(#colorReceived)"
-                                />
-                                <Tooltip />
-                                <XAxis dataKey="name" />
-                                <YAxis allowDecimals={false} />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                    <div className={style.statisticGraph}>
-                        <ResponsiveContainer
-                            width="100%"
-                            aspect={4.0 / 3.0}
-                            min-height="300px"
-                        >
-                            <AreaChart
-                                data={data1}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <defs>
-                                    <linearGradient
-                                        id="colorSent"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop
-                                            offset="5%"
-                                            stopColor="#82ca9d"
-                                            stopOpacity={0.8}
-                                        />
-                                        <stop
-                                            offset="95%"
-                                            stopColor="#82ca9d"
-                                            stopOpacity={0}
-                                        />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid
-                                    strokeDasharray="3 3"
-                                    stroke="#323743"
-                                />
-                                <Area
-                                    type="monotone"
-                                    dataKey="sent"
-                                    stroke="#82ca9d"
-                                    fillOpacity={1}
-                                    fill="url(#colorSent)"
-                                />
-                                <Tooltip />
-                                <XAxis dataKey="name" />
-                                <YAxis allowDecimals={false} />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                    <div className={style.statistic}>Other</div>
+            </Card>
+            <Card>
+                <h1>Recent Webhooks</h1>
+                <h2>Currently displaying latest 5 webhooks</h2>
+                <Divider />
+                <div className={style.webhookList}>
+                    {webhooks.state === 'loading' && <div>Loading</div>}
+                    {webhooks.state === 'hasValue' &&
+                        webhooks.contents.map((webhook: Webhook) => {
+                            return webhook.type === 'received_message' ? (
+                                <PublishedWebhook webhook={webhook} />
+                            ) : (
+                                <ReceivedWebhook webhook={webhook} />
+                            );
+                        })}
                 </div>
             </Card>
         </Container>

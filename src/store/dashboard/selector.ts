@@ -1,6 +1,12 @@
 import { selector } from 'recoil';
 import { statistics } from './atom';
-import { getAverageTime, getTotalReceived, getTotalSent } from './requests';
+import {
+    getAverageTime,
+    getDaysCounts,
+    getExecutionTimes,
+    getTotalReceived,
+    getTotalSent,
+} from './requests';
 import { Statistics } from './types';
 
 export const statisticsSelector = selector({
@@ -10,6 +16,9 @@ export const statisticsSelector = selector({
             received: await getTotalReceived(),
             sent: await getTotalSent(),
             averageTime: await getAverageTime(),
+            executionTimes: await getExecutionTimes(),
+            sentDays: await getDaysCounts('sent_message'),
+            receivedDays: await getDaysCounts('received_message'),
         };
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

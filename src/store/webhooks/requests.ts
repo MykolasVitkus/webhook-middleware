@@ -1,7 +1,8 @@
+/* eslint-disable no-prototype-builtins */
 import axios, { AxiosResponse } from 'axios';
 import { setupInterceptorsTo } from '../../interceptors';
 import { getToken } from '../auth/service';
-import { Webhook, WebhookDTO } from './types';
+import { Filters, Webhook, WebhookDTO } from './types';
 
 const axiosInstance = setupInterceptorsTo(axios.create());
 
@@ -67,11 +68,15 @@ export const resendWebhookQuery: (id: string) => Promise<Webhook> = (
     id: string,
 ) =>
     axiosInstance
-        .post('/api/domain-events/retry/' + id, {
-            headers: {
-                Authorization: 'Bearer '.concat(getToken() as string),
+        .post(
+            `/api/domain-events/retry/${id}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
             },
-        })
+        )
         .then((res: GetWebhookResponse) => {
             return {
                 id: res.data._id,
@@ -84,4 +89,31 @@ export const resendWebhookQuery: (id: string) => Promise<Webhook> = (
                 prevEvent: res.data.prevEvent,
                 createdAt: new Date(res.data.createdAt),
             };
+        });
+
+export const getFilteredWebhooks: (filters: Filters) => Promise<Webhook[]> = (
+    filters: Filters,
+) =>
+    axiosInstance
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        .get('/api/domain-events?' + new URLSearchParams(filters).toString(), {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
+        .then((res: GetWebhooksResponse) => {
+            return res.data.map((val: WebhookDTO) => {
+                return {
+                    id: val._id,
+                    type: val.type,
+                    status: val.status,
+                    payload: val.payload,
+                    publisherId: val.publisherId,
+                    subscriberId: val.subscriberId,
+                    metadata: val.metadata,
+                    prevEvent: val.prevEvent,
+                    createdAt: new Date(val.createdAt),
+                };
+            });
         });

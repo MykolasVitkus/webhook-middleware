@@ -38,7 +38,13 @@ export const LoginForm: React.FC = () => {
 
     return (
         <div className={style.login}>
-            <div className={style.form}>
+            <form
+                className={style.form}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    submitForm(e);
+                }}
+            >
                 <div className={style.logo}>
                     <img src={logo} className={style.logoImage} alt="logo" />
                 </div>
@@ -86,7 +92,7 @@ export const LoginForm: React.FC = () => {
                         Submit
                     </Button>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

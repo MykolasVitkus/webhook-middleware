@@ -3,10 +3,11 @@ import { fromDictionary } from '../../utils/parsers';
 import { Dictionary } from '../../utils/types';
 import { webhooks } from './atom';
 import {
+    getFilteredWebhooks,
     getPublishedWebhooksByPublisherIdQuery,
     getReceivedWebhooksBySubscriberIdQuery,
 } from './requests';
-import { Webhook } from './types';
+import { Filters, Webhook } from './types';
 
 export const publishedWebhooksSelector = selectorFamily({
     key: 'publishedWebhooksByPublisherIdSelector',
@@ -37,6 +38,13 @@ export const receivedWebhooksSelector = selectorFamily({
         set(webhooks, (prevState: Dictionary<Webhook>) => {
             return { ...prevState, [id]: newValue };
         }),
+});
+
+export const webhooksFilteredSelector = selectorFamily<Webhook[], Filters>({
+    key: 'webhooksFilteredSelector',
+    get: (filters: Filters) => async () => {
+        return await getFilteredWebhooks(filters);
+    },
 });
 
 // export const receivedLoadedWebhooksSelector = selectorFamily<any, string>({

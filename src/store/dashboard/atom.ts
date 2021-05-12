@@ -7,5 +7,8 @@ export const statistics = atom<Statistics>({
         received: 0,
         sent: 0,
         averageTime: 0,
+        executionTimes: [],
+        sentDays: [],
+        receivedDays: [],
     },
 });
