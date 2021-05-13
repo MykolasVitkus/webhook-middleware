@@ -83,7 +83,7 @@ function App() {
                 <PrivateRoute exact path={Routes.SubscribersView}>
                     <SubscribersView />
                 </PrivateRoute>
-                <PrivateRoute exact path={Routes.SubscribersView}>
+                <PrivateRoute exact path={Routes.History}>
                     <History />
                 </PrivateRoute>
             </Switch>

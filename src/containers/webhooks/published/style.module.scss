@@ -60,3 +60,14 @@
     align-items: center;
     margin-left: 4px;
 }
+
+.flexRow {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.link {
+    margin-left: 4px;
+    color: lightblue;
+    cursor: pointer;
+}

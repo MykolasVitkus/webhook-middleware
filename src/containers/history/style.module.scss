@@ -1,0 +1,23 @@
+@import '../../globals.module.scss';
+
+.webhookList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.inputText {
+    margin-top: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 32px;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid $backgroundColor;
+    color: $primText;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 2px;
+}

@@ -1,4 +1,6 @@
 import React from 'react';
+import { FaEye } from 'react-icons/fa';
+import { useHistory } from 'react-router';
 import {
     Area,
     AreaChart,
@@ -12,6 +14,7 @@ import {
     YAxis,
 } from 'recharts';
 import { useRecoilValueLoadable } from 'recoil';
+import Button from '../../components/button';
 import Card from '../../components/card';
 import Container from '../../components/container';
 import Divider from '../../components/divider';
@@ -19,6 +22,7 @@ import Loader from '../../components/loader';
 import { statisticsSelector } from '../../store/dashboard/selector';
 import { webhooksFilteredSelector } from '../../store/webhooks/selector';
 import { Webhook } from '../../store/webhooks/types';
+import Routes from '../../utils/routes';
 import PublishedWebhook from '../webhooks/published';
 import ReceivedWebhook from '../webhooks/received';
 import style from './style.module.scss';
@@ -37,6 +41,12 @@ export const Dashboard: React.FC = () => {
             status: null,
         }),
     );
+
+    const history = useHistory();
+
+    const changeRoute = (route: string) => {
+        history.push(route);
+    };
 
     return (
         <Container>
@@ -231,11 +241,22 @@ export const Dashboard: React.FC = () => {
                 )}
             </Card>
             <Card>
-                <h1>Recent Webhooks</h1>
-                <h2>Currently displaying latest 5 webhooks</h2>
+                <div className={style.flex}>
+                    <div>
+                        <h1>Recent Webhooks</h1>
+                        <h2>Currently displaying latest 5 webhooks</h2>
+                    </div>
+                    <div>
+                        <Button handleClick={() => changeRoute(Routes.History)}>
+                            <FaEye className={style.iconMargin} />
+                            View More
+                        </Button>
+                    </div>
+                </div>
+
                 <Divider />
                 <div className={style.webhookList}>
-                    {webhooks.state === 'loading' && <div>Loading</div>}
+                    {webhooks.state === 'loading' && <Loader />}
                     {webhooks.state === 'hasValue' &&
                         webhooks.contents.map((webhook: Webhook) => {
                             return webhook.type === 'received_message' ? (

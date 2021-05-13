@@ -65,19 +65,19 @@ const ReceivedWebhook: React.FC<WebhookProps> = ({ webhook }) => {
                         </h1>
 
                         <h2 className={style.flexRow}>
-                            From Publisher{' '}
+                            By Subscriber{' '}
                             <div
                                 className={style.link}
                                 onClick={() =>
                                     changeRoute(
-                                        Routes.PublishersView.replace(
+                                        Routes.SubscribersView.replace(
                                             ':id',
-                                            webhook.publisherId as string,
+                                            webhook.subscriberId as string,
                                         ),
                                     )
                                 }
                             >
-                                {webhook.publisherId}
+                                #{webhook.subscriberId}
                             </div>
                         </h2>
                     </div>

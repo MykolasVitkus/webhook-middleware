@@ -52,7 +52,22 @@ const PublishedWebhook: React.FC<WebhookProps> = ({ webhook }) => {
                         </div>
                     </h1>
 
-                    <h2>Published by {webhook.publisherId}</h2>
+                    <h2 className={style.flexRow}>
+                        Published by
+                        <div
+                            className={style.link}
+                            onClick={() =>
+                                changeRoute(
+                                    Routes.PublishersView.replace(
+                                        ':id',
+                                        webhook.publisherId as string,
+                                    ),
+                                )
+                            }
+                        >
+                            #{webhook.publisherId}
+                        </div>
+                    </h2>
                 </div>
 
                 <div className={style.flex}>
