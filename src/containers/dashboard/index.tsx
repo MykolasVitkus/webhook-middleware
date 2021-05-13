@@ -81,7 +81,8 @@ export const Dashboard: React.FC = () => {
                             </div>
                             <div className={style.statistic}>
                                 <div className={style.statisticValue}>
-                                    {statistics.contents.averageTime} ms
+                                    {statistics.contents.averageTime.toFixed(2)}{' '}
+                                    ms
                                 </div>
                                 <div className={style.statisticTitle}>
                                     Average time
