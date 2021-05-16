@@ -49,7 +49,7 @@ const ReceivedWebhook: React.FC<WebhookProps> = ({ webhook }) => {
                 <div className={style.flexRowFullWidth}>
                     <div>
                         <h1 className={style.flexRow}>
-                            Received at{' '}
+                            Forwarded at{' '}
                             {webhook.createdAt.toLocaleString('en-LT', {
                                 hour12: false,
                             })}
@@ -65,7 +65,7 @@ const ReceivedWebhook: React.FC<WebhookProps> = ({ webhook }) => {
                         </h1>
 
                         <h2 className={style.flexRow}>
-                            By Subscriber{' '}
+                            To Subscriber{' '}
                             <div
                                 className={style.link}
                                 onClick={() =>

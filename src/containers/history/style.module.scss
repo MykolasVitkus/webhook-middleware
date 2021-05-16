@@ -1,9 +1,23 @@
 @import '../../globals.module.scss';
 
 .webhookList {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.filters {
+    display: flex;
+}
+
+.filter {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 14px;
 }
 
 .inputText {
@@ -11,6 +25,7 @@
     padding-left: 6px;
     padding-right: 6px;
     height: 32px;
+    margin-right: 0.5rem;
     box-shadow: none;
     background-color: transparent;
     cursor: pointer;
@@ -20,4 +35,73 @@
     -webkit-appearance: none;
     outline: none;
     border-radius: 2px;
+}
+
+.container {
+    // background-color: #272b34;
+}
+
+.overlay {
+    // background-color: red;
+}
+
+.overlayWrapper {
+    position: absolute;
+    z-index: 10;
+    background-color: #272b34;
+    border-radius: 2px;
+    border: 1px solid $backgroundColor;
+}
+
+.dropDownField {
+    @extend .inputText;
+    width: 200px;
+    position: relative;
+    height: 34px;
+}
+
+.dropDown {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // background-color: red;
+    width: calc(100% - 1rem);
+    height: 100%;
+    z-index: 12;
+}
+
+.dropDownMenu {
+    position: absolute;
+    top: 34px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border: 1px solid $backgroundColor;
+    // @extend .inputText;
+    color: $primText;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 2px;
+    z-index: 13;
+    background-color: #272b34;
+    left: 0;
+    width: calc(100% - 1rem);
+    padding-right: 6px;
+    height: unset;
+}
+
+.dropDownArrow {
+    position: absolute;
+    right: 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginationText {
+    padding-right: 1rem;
+    padding-left: 1rem;
 }

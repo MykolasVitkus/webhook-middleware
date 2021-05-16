@@ -26,14 +26,16 @@ export interface WebhookLoaded {
 }
 
 export type Filters = {
-    offset: string | null;
-    limit: string | null;
-    type: string | null;
-    searchQuery: string | null;
-    searchProperty: string | null;
-    status: WebhookStatus | null;
-    orderField: string | null;
-    orderDirection: string | null;
+    offset: string;
+    limit: string;
+    type: string | undefined;
+    searchQuery: string | undefined;
+    searchProperty: string | undefined;
+    status: WebhookStatus | undefined;
+    orderField: string | undefined;
+    orderDirection: string | undefined;
+    dateFrom: Date | undefined;
+    dateTo: Date | undefined;
 };
 
 export interface WebhookDTO {

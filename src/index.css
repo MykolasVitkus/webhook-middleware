@@ -14,3 +14,26 @@ div.jsoneditor-mode-code {
 .jsoneditor {
     border: thin solid #414755 !important;
 }
+
+.DayPickerInput-OverlayWrapper {
+    background-color: red;
+}
+
+.Dropdown-option {
+    height: 32px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-left: -6px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: all 0.1s;
+}
+
+.Dropdown-option:hover {
+    background-color: #4d5568;
+}
+
+.Dropdown-option.is-selected {
+    background-color: #4d5568;
+}

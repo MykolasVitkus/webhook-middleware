@@ -322,6 +322,22 @@ export const SubscribersCreate: React.FC = () => {
                                                     </select>
                                                 )}
                                             </div>
+                                            <Button
+                                                handleClick={(e) => {
+                                                    e.preventDefault();
+                                                    setSubscriberForm({
+                                                        ...subscriberForm,
+                                                        subscribedTo: subscriberForm.subscribedTo.filter(
+                                                            (val, i) =>
+                                                                i !== index,
+                                                        ),
+                                                    });
+                                                }}
+                                            >
+                                                <div className={style.remove}>
+                                                    Remove Subscription
+                                                </div>
+                                            </Button>
                                         </div>
                                     );
                                 },

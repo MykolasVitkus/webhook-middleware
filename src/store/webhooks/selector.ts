@@ -4,6 +4,7 @@ import { Dictionary } from '../../utils/types';
 import { webhooks } from './atom';
 import {
     getFilteredWebhooks,
+    getFilteredWebhooksCount,
     getPublishedWebhooksByPublisherIdQuery,
     getReceivedWebhooksBySubscriberIdQuery,
 } from './requests';
@@ -44,6 +45,13 @@ export const webhooksFilteredSelector = selectorFamily<Webhook[], Filters>({
     key: 'webhooksFilteredSelector',
     get: (filters: Filters) => async () => {
         return await getFilteredWebhooks(filters);
+    },
+});
+
+export const webhooksFilteredCountSelector = selectorFamily<number, Filters>({
+    key: 'webhooksFilteredSelector',
+    get: (filters: Filters) => async () => {
+        return await getFilteredWebhooksCount(filters);
     },
 });
 

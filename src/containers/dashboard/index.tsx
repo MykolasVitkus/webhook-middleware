@@ -33,12 +33,14 @@ export const Dashboard: React.FC = () => {
         webhooksFilteredSelector({
             offset: '0',
             limit: '5',
-            type: null,
-            searchQuery: null,
-            searchProperty: null,
-            orderDirection: null,
-            orderField: null,
-            status: null,
+            type: undefined,
+            searchQuery: undefined,
+            searchProperty: undefined,
+            orderDirection: undefined,
+            orderField: undefined,
+            status: undefined,
+            dateFrom: undefined,
+            dateTo: undefined,
         }),
     );
 

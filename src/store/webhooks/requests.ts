@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { setupInterceptorsTo } from '../../interceptors';
 import { getToken } from '../auth/service';
 import { Filters, Webhook, WebhookDTO } from './types';
+import { pickBy } from 'lodash';
 
 const axiosInstance = setupInterceptorsTo(axios.create());
 
@@ -12,6 +13,10 @@ interface GetWebhooksResponse extends AxiosResponse {
 
 interface GetWebhookResponse extends AxiosResponse {
     data: WebhookDTO;
+}
+
+interface getNumberResponse extends AxiosResponse {
+    data: number;
 }
 
 export const getPublishedWebhooksByPublisherIdQuery: (
@@ -97,11 +102,17 @@ export const getFilteredWebhooks: (filters: Filters) => Promise<Webhook[]> = (
     axiosInstance
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        .get('/api/domain-events?' + new URLSearchParams(filters).toString(), {
-            headers: {
-                Authorization: 'Bearer '.concat(getToken() as string),
+        .get(
+            '/api/domain-events?' +
+                new URLSearchParams(
+                    pickBy(filters, (v) => v !== undefined),
+                ).toString(),
+            {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
             },
-        })
+        )
         .then((res: GetWebhooksResponse) => {
             return res.data.map((val: WebhookDTO) => {
                 return {
@@ -116,4 +127,25 @@ export const getFilteredWebhooks: (filters: Filters) => Promise<Webhook[]> = (
                     createdAt: new Date(val.createdAt),
                 };
             });
+        });
+
+export const getFilteredWebhooksCount: (filters: Filters) => Promise<number> = (
+    filters: Filters,
+) =>
+    axiosInstance
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        .get(
+            '/api/domain-events/count?' +
+                new URLSearchParams(
+                    pickBy(filters, (v) => v !== undefined),
+                ).toString(),
+            {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
+            },
+        )
+        .then((res: getNumberResponse) => {
+            return res.data;
         });
