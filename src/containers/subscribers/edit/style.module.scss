@@ -13,6 +13,11 @@
     margin-bottom: 1rem;
 }
 
+.subscriptionField {
+    @extend .field;
+    max-width: unset;
+}
+
 .input {
     margin-top: 4px;
     padding-left: 6px;
@@ -23,6 +28,23 @@
     cursor: pointer;
     font-size: 14px;
     border: 1px solid $navColor;
+    color: $primText;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 2px;
+}
+
+.inputText {
+    margin-top: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 32px;
+    margin-right: 0.5rem;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid $backgroundColor;
     color: $primText;
     -webkit-appearance: none;
     outline: none;
@@ -62,4 +84,68 @@
 
 .jsonEditor {
     height: 100%;
+}
+
+.subscriptions {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.selects {
+    margin-right: 1rem;
+    padding: 1rem;
+    border: 1px solid $navColor;
+    min-height: 0;
+    border-radius: 2px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    // display: flex;
+}
+
+.dropDownField {
+    @extend .inputText;
+    width: 200px;
+    position: relative;
+    height: 34px;
+}
+
+.dropDown {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // background-color: red;
+    width: calc(100% - 1rem);
+    height: 100%;
+    z-index: 12;
+}
+
+.dropDownMenu {
+    position: absolute;
+    top: 34px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border: 1px solid $backgroundColor;
+    // @extend .inputText;
+    color: $primText;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 2px;
+    z-index: 13;
+    background-color: #272b34;
+    left: 0;
+    width: calc(100% - 1rem);
+    padding-right: 6px;
+    height: unset;
+}
+
+.dropDownArrow {
+    position: absolute;
+    right: 0;
+}
+
+.iconMargin {
+    margin-right: 6px;
 }

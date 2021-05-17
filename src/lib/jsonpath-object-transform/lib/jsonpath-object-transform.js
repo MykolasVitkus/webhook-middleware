@@ -34,6 +34,7 @@
      */
     function walk(data, path, result, key) {
         var fn;
+        // console.log(type(path));
 
         switch (type(path)) {
             case 'string':
@@ -108,19 +109,11 @@
      * @param {string} key
      */
     function seekArray(data, pathArr, result, key) {
-        var subpath = pathArr[1];
-        var path = pathArr[0];
-        var seek = jsonPath.eval(data, path) || [];
-
-        if (seek.length && subpath) {
-            result = result[key] = [];
-
-            seek[0].forEach(function (item, index) {
-                walk(item, subpath, result, index);
-            });
-        } else {
-            result[key] = seek;
-        }
+        var tempResult = [];
+        result[key] = pathArr.forEach(function (_prop, index) {
+            walk(data, pathArr[index], tempResult, index);
+        });
+        result[key] = tempResult;
     }
 
     /**

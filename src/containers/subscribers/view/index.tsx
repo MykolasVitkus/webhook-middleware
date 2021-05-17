@@ -1,14 +1,18 @@
 import React from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import Button from '../../../components/button';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import Divider from '../../../components/divider';
 import Loader from '../../../components/loader';
 import { deleteSubscriberModal } from '../../../store/subscribers/atom';
-import { subscribersByIdSelector } from '../../../store/subscribers/selector';
+import {
+    subscribersByIdSelector,
+    subscriptionsBySubscriberSelector,
+} from '../../../store/subscribers/selector';
+import { Subscriber, SubscriberType } from '../../../store/subscribers/types';
 import { receivedWebhooksSelector } from '../../../store/webhooks/selector';
 import Routes from '../../../utils/routes';
 import { SubscriberWebhooksList } from '../../webhooks/received-list';
@@ -18,7 +22,9 @@ import style from './style.module.scss';
 export const SubscribersView: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { id } = useParams<any>();
-    const subscriber = useRecoilValueLoadable(subscribersByIdSelector(id));
+    const subscriber = useRecoilValueLoadable<Subscriber>(
+        subscribersByIdSelector(id),
+    );
     const receivedWebhooks = useRecoilValueLoadable(
         receivedWebhooksSelector(id),
     );

@@ -36,6 +36,7 @@ export const MappersView: React.FC = () => {
         edit: (domElement) => {
             const editor = ace.edit(domElement);
             setTimeout(() => {
+                editor.setStyle(style.ace);
                 editor.setReadOnly(true);
                 editor.setHighlightActiveLine(false);
                 editor.setOption('highlightGutterLine', false);

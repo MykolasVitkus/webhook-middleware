@@ -25,6 +25,8 @@ import { mappersQuerySelector } from '../../../store/mappers/selector';
 import { publishersQuerySelector } from '../../../store/publishers/selector';
 import { Publisher } from '../../../store/publishers/types';
 import Loader from '../../../components/loader';
+import ReactDropdown from 'react-dropdown';
+import { FaCaretDown, FaCaretUp, FaMinus, FaPlus } from 'react-icons/fa';
 
 export const SubscribersCreate: React.FC = () => {
     const history = useHistory();
@@ -176,6 +178,9 @@ export const SubscribersCreate: React.FC = () => {
                         <div className={style.field}>
                             <div className={style.button}>
                                 <Button handleClick={(e) => addSubscription(e)}>
+                                    <FaPlus
+                                        className={style.iconMargin}
+                                    ></FaPlus>
                                     Add Subscriber
                                 </Button>
                             </div>
@@ -191,135 +196,170 @@ export const SubscribersCreate: React.FC = () => {
                                             className={style.selects}
                                             key={index}
                                         >
-                                            <div className={style.field}>
-                                                <label>Publisher</label>
+                                            <div
+                                                className={
+                                                    style.subscriptionField
+                                                }
+                                            >
                                                 {publishersState.state ===
                                                     'loading' && <Loader />}
                                                 {publishersState.state ===
                                                     'hasValue' && (
-                                                    <select
-                                                        value={
-                                                            subscriberForm
-                                                                .subscribedTo[
-                                                                index
-                                                            ].publisherId
-                                                        }
-                                                        onChange={(e) => {
-                                                            setSubscriberForm({
-                                                                ...subscriberForm,
-                                                                subscribedTo: [
-                                                                    ...subscriberForm.subscribedTo.slice(
-                                                                        0,
-                                                                        index,
-                                                                    ),
-                                                                    {
-                                                                        ...subscriberForm
-                                                                            .subscribedTo[
-                                                                            index
-                                                                        ],
-                                                                        publisherId:
-                                                                            e
-                                                                                .target
-                                                                                .value,
-                                                                    },
-                                                                    ...subscriberForm.subscribedTo.slice(
-                                                                        index +
-                                                                            1,
-                                                                    ),
-                                                                ],
-                                                            });
-                                                        }}
+                                                    <div
+                                                        className={style.select}
                                                     >
-                                                        {publishersState.contents.map(
-                                                            (
-                                                                publisher: Publisher,
-                                                                key: number,
-                                                            ) => {
-                                                                return (
-                                                                    <option
-                                                                        key={index
-                                                                            .toString()
-                                                                            .concat(
-                                                                                key.toString(),
-                                                                            )}
-                                                                        value={
-                                                                            publisher.id
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            publisher.name
-                                                                        }
-                                                                    </option>
+                                                        <label
+                                                            className={
+                                                                style.label
+                                                            }
+                                                        >
+                                                            Publisher
+                                                        </label>
+                                                        <ReactDropdown
+                                                            className={
+                                                                style.dropDownField
+                                                            }
+                                                            controlClassName={
+                                                                style.dropDown
+                                                            }
+                                                            menuClassName={
+                                                                style.dropDownMenu
+                                                            }
+                                                            arrowClosed={
+                                                                <FaCaretDown />
+                                                            }
+                                                            arrowOpen={
+                                                                <FaCaretUp />
+                                                            }
+                                                            arrowClassName={
+                                                                style.dropDownArrow
+                                                            }
+                                                            value={
+                                                                subscriberForm
+                                                                    .subscribedTo[
+                                                                    index
+                                                                ].publisherId
+                                                            }
+                                                            options={publishersState.contents.map(
+                                                                (
+                                                                    pub: Publisher,
+                                                                ) => {
+                                                                    return {
+                                                                        label:
+                                                                            pub.name,
+                                                                        value:
+                                                                            pub.id,
+                                                                    };
+                                                                },
+                                                            )}
+                                                            onChange={(e) => {
+                                                                setSubscriberForm(
+                                                                    {
+                                                                        ...subscriberForm,
+                                                                        subscribedTo: [
+                                                                            ...subscriberForm.subscribedTo.slice(
+                                                                                0,
+                                                                                index,
+                                                                            ),
+                                                                            {
+                                                                                ...subscriberForm
+                                                                                    .subscribedTo[
+                                                                                    index
+                                                                                ],
+                                                                                publisherId:
+                                                                                    e.value,
+                                                                            },
+                                                                            ...subscriberForm.subscribedTo.slice(
+                                                                                index +
+                                                                                    1,
+                                                                            ),
+                                                                        ],
+                                                                    },
                                                                 );
-                                                            },
-                                                        )}
-                                                    </select>
+                                                            }}
+                                                        />
+                                                    </div>
                                                 )}
                                             </div>
                                             <div className={style.field}>
-                                                <label>Mapper</label>
-
                                                 {mappersState.state ===
                                                     'loading' && <Loader />}
                                                 {mappersState.state ===
                                                     'hasValue' && (
-                                                    <select
-                                                        value={
-                                                            subscriberForm
-                                                                .subscribedTo[
-                                                                index
-                                                            ].mapperId
-                                                        }
-                                                        onChange={(e) => {
-                                                            setSubscriberForm({
-                                                                ...subscriberForm,
-                                                                subscribedTo: [
-                                                                    ...subscriberForm.subscribedTo.slice(
-                                                                        0,
-                                                                        index,
-                                                                    ),
-                                                                    {
-                                                                        ...subscriberForm
-                                                                            .subscribedTo[
-                                                                            index
-                                                                        ],
-                                                                        mapperId:
-                                                                            e
-                                                                                .target
-                                                                                .value,
-                                                                    },
-                                                                    ...subscriberForm.subscribedTo.slice(
-                                                                        index +
-                                                                            1,
-                                                                    ),
-                                                                ],
-                                                            });
-                                                        }}
+                                                    <div
+                                                        className={style.select}
                                                     >
-                                                        {mappersState.contents.map(
-                                                            (
-                                                                mapper: Mapper,
-                                                                key: number,
-                                                            ) => {
-                                                                return (
-                                                                    <option
-                                                                        key={index
-                                                                            .toString()
-                                                                            .concat(
-                                                                                key.toString(),
-                                                                            )}
-                                                                        value={
-                                                                            mapper.id
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            mapper.name
-                                                                        }
-                                                                    </option>
+                                                        <label
+                                                            className={
+                                                                style.label
+                                                            }
+                                                        >
+                                                            Mapper
+                                                        </label>
+                                                        <ReactDropdown
+                                                            className={
+                                                                style.dropDownField
+                                                            }
+                                                            controlClassName={
+                                                                style.dropDown
+                                                            }
+                                                            menuClassName={
+                                                                style.dropDownMenu
+                                                            }
+                                                            arrowClosed={
+                                                                <FaCaretDown />
+                                                            }
+                                                            arrowOpen={
+                                                                <FaCaretUp />
+                                                            }
+                                                            arrowClassName={
+                                                                style.dropDownArrow
+                                                            }
+                                                            value={
+                                                                subscriberForm
+                                                                    .subscribedTo[
+                                                                    index
+                                                                ].mapperId
+                                                            }
+                                                            options={mappersState.contents.map(
+                                                                (
+                                                                    pub: Publisher,
+                                                                ) => {
+                                                                    return {
+                                                                        label:
+                                                                            pub.name,
+                                                                        value:
+                                                                            pub.id,
+                                                                    };
+                                                                },
+                                                            )}
+                                                            onChange={(e) => {
+                                                                setSubscriberForm(
+                                                                    {
+                                                                        ...subscriberForm,
+                                                                        subscribedTo: [
+                                                                            ...subscriberForm.subscribedTo.slice(
+                                                                                0,
+                                                                                index,
+                                                                            ),
+                                                                            {
+                                                                                ...subscriberForm
+                                                                                    .subscribedTo[
+                                                                                    index
+                                                                                ],
+                                                                                mapperId:
+                                                                                    e.value,
+                                                                            },
+                                                                            ...subscriberForm.subscribedTo.slice(
+                                                                                index +
+                                                                                    1,
+                                                                            ),
+                                                                        ],
+                                                                    },
                                                                 );
-                                                            },
-                                                        )}
-                                                    </select>
+                                                            }}
+                                                        />
+                                                    </div>
                                                 )}
                                             </div>
                                             <Button
@@ -335,6 +375,11 @@ export const SubscribersCreate: React.FC = () => {
                                                 }}
                                             >
                                                 <div className={style.remove}>
+                                                    <FaMinus
+                                                        className={
+                                                            style.iconMargin
+                                                        }
+                                                    ></FaMinus>
                                                     Remove Subscription
                                                 </div>
                                             </Button>
