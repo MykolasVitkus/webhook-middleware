@@ -45,12 +45,10 @@ export const PublishersEdit: React.FC = () => {
         history.push(route);
     };
 
-    const [
-        publishersFormErrors,
-        setPublishersFormErrors,
-    ] = useState<PublisherForm>({
-        name: '',
-    });
+    const [publishersFormErrors, setPublishersFormErrors] =
+        useState<PublisherForm>({
+            name: '',
+        });
 
     const onChangeName = (e) => {
         setPublishersForm({ ...publishersForm, name: e.target.value });

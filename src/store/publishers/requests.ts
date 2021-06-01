@@ -47,22 +47,21 @@ export const getPublisherByIdQuery: (id: string) => Promise<Publisher> = (
             };
         });
 
-export const createPublisherQuery: (
-    body: PublisherForm,
-) => Promise<Publisher> = (body: PublisherForm) =>
-    axiosInstance
-        .post('/api/publishers', body, {
-            headers: {
-                Authorization: 'Bearer '.concat(getToken() as string),
-            },
-        })
-        .then((res: GetPublisherResponse) => {
-            return {
-                id: res.data._id,
-                name: res.data.name,
-                createdAt: new Date(res.data.createdAt),
-            };
-        });
+export const createPublisherQuery: (body: PublisherForm) => Promise<Publisher> =
+    (body: PublisherForm) =>
+        axiosInstance
+            .post('/api/publishers', body, {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
+            })
+            .then((res: GetPublisherResponse) => {
+                return {
+                    id: res.data._id,
+                    name: res.data.name,
+                    createdAt: new Date(res.data.createdAt),
+                };
+            });
 
 export const editPublisherQuery: (
     body: PublisherForm,

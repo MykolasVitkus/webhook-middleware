@@ -49,6 +49,7 @@ const Navbar: React.FC = () => {
                             : style.navItem
                     }
                     onClick={() => changeRoute(Routes.Publishers)}
+                    data-test="navPublishers"
                 >
                     <FaInbox className={style.navItem_icon} />
                     Publishers

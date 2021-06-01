@@ -64,7 +64,7 @@ const Publishers: React.FC = () => {
             <Card>
                 <div className={style.flex}>
                     <div>
-                        <h1>Publishers</h1>
+                        <h1 data-test="publishersTitle">Publishers</h1>
                         <h2>Configure your publishers</h2>
                     </div>
                     <div>

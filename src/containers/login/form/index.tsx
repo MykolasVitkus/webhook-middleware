@@ -53,6 +53,7 @@ export const LoginForm: React.FC = () => {
                     <input
                         type="text"
                         name="name"
+                        data-test="username"
                         className={style.input}
                         autoComplete="off"
                         value={loginFormState.username}
@@ -71,6 +72,7 @@ export const LoginForm: React.FC = () => {
                     <input
                         type="password"
                         name="name"
+                        data-test="password"
                         className={style.input}
                         autoComplete="off"
                         value={loginFormState.password}
@@ -87,6 +89,7 @@ export const LoginForm: React.FC = () => {
                 <div>
                     <Button
                         style={style.button}
+                        data-test="submitLogin"
                         handleClick={(e) => submitForm(e)}
                     >
                         Submit

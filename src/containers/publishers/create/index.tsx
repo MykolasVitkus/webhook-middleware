@@ -23,12 +23,10 @@ export const PublishersNew: React.FC = () => {
         name: '',
     });
 
-    const [
-        publishersFormErrors,
-        setPublishersFormErrors,
-    ] = useState<PublisherForm>({
-        name: '',
-    });
+    const [publishersFormErrors, setPublishersFormErrors] =
+        useState<PublisherForm>({
+            name: '',
+        });
 
     const [publishersState, setPublishers] = useRecoilState(publishers);
 

@@ -1,15 +1,16 @@
 version: '3.7'
 
 services:
-  bakis-app:
-    image: node:latest
-    entrypoint: 'tail -f /dev/null'
-    working_dir: /app
-    volumes:
-      - ./:/app:rw,cached
-    networks:
-      - dev_net
-
+    bakis-app:
+        image: node:latest
+        entrypoint: 'tail -f /dev/null'
+        working_dir: /app
+        volumes:
+            - ./:/app:rw,cached
+        networks:
+            - dev_net
+        ports:
+            - 3000:3000
 networks:
-  dev_net:
-    external: true
+    dev_net:
+        external: true

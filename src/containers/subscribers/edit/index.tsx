@@ -36,9 +36,8 @@ export const SubscribersEdit: React.FC = () => {
         history.push(route);
     };
 
-    const [subscriberForm, setSubscriberForm] = useRecoilState<SubscriberForm>(
-        createSubscriberForm,
-    );
+    const [subscriberForm, setSubscriberForm] =
+        useRecoilState<SubscriberForm>(createSubscriberForm);
 
     const [subscriberFormErrors, setSubscriberFormErrors] = useState({
         name: '',
@@ -266,10 +265,8 @@ export const SubscribersEdit: React.FC = () => {
                                                                     pub: Publisher,
                                                                 ) => {
                                                                     return {
-                                                                        label:
-                                                                            pub.name,
-                                                                        value:
-                                                                            pub.id,
+                                                                        label: pub.name,
+                                                                        value: pub.id,
                                                                     };
                                                                 },
                                                             )}
@@ -277,24 +274,25 @@ export const SubscribersEdit: React.FC = () => {
                                                                 setSubscriberForm(
                                                                     {
                                                                         ...subscriberForm,
-                                                                        subscribedTo: [
-                                                                            ...subscriberForm.subscribedTo.slice(
-                                                                                0,
-                                                                                index,
-                                                                            ),
-                                                                            {
-                                                                                ...subscriberForm
-                                                                                    .subscribedTo[
-                                                                                    index
-                                                                                ],
-                                                                                publisherId:
-                                                                                    e.value,
-                                                                            },
-                                                                            ...subscriberForm.subscribedTo.slice(
-                                                                                index +
-                                                                                    1,
-                                                                            ),
-                                                                        ],
+                                                                        subscribedTo:
+                                                                            [
+                                                                                ...subscriberForm.subscribedTo.slice(
+                                                                                    0,
+                                                                                    index,
+                                                                                ),
+                                                                                {
+                                                                                    ...subscriberForm
+                                                                                        .subscribedTo[
+                                                                                        index
+                                                                                    ],
+                                                                                    publisherId:
+                                                                                        e.value,
+                                                                                },
+                                                                                ...subscriberForm.subscribedTo.slice(
+                                                                                    index +
+                                                                                        1,
+                                                                                ),
+                                                                            ],
                                                                     },
                                                                 );
                                                             }}
@@ -347,10 +345,8 @@ export const SubscribersEdit: React.FC = () => {
                                                                     pub: Publisher,
                                                                 ) => {
                                                                     return {
-                                                                        label:
-                                                                            pub.name,
-                                                                        value:
-                                                                            pub.id,
+                                                                        label: pub.name,
+                                                                        value: pub.id,
                                                                     };
                                                                 },
                                                             )}
@@ -358,24 +354,25 @@ export const SubscribersEdit: React.FC = () => {
                                                                 setSubscriberForm(
                                                                     {
                                                                         ...subscriberForm,
-                                                                        subscribedTo: [
-                                                                            ...subscriberForm.subscribedTo.slice(
-                                                                                0,
-                                                                                index,
-                                                                            ),
-                                                                            {
-                                                                                ...subscriberForm
-                                                                                    .subscribedTo[
-                                                                                    index
-                                                                                ],
-                                                                                mapperId:
-                                                                                    e.value,
-                                                                            },
-                                                                            ...subscriberForm.subscribedTo.slice(
-                                                                                index +
-                                                                                    1,
-                                                                            ),
-                                                                        ],
+                                                                        subscribedTo:
+                                                                            [
+                                                                                ...subscriberForm.subscribedTo.slice(
+                                                                                    0,
+                                                                                    index,
+                                                                                ),
+                                                                                {
+                                                                                    ...subscriberForm
+                                                                                        .subscribedTo[
+                                                                                        index
+                                                                                    ],
+                                                                                    mapperId:
+                                                                                        e.value,
+                                                                                },
+                                                                                ...subscriberForm.subscribedTo.slice(
+                                                                                    index +
+                                                                                        1,
+                                                                                ),
+                                                                            ],
                                                                     },
                                                                 );
                                                             }}
@@ -388,10 +385,11 @@ export const SubscribersEdit: React.FC = () => {
                                                     e.preventDefault();
                                                     setSubscriberForm({
                                                         ...subscriberForm,
-                                                        subscribedTo: subscriberForm.subscribedTo.filter(
-                                                            (val, i) =>
-                                                                i !== index,
-                                                        ),
+                                                        subscribedTo:
+                                                            subscriberForm.subscribedTo.filter(
+                                                                (val, i) =>
+                                                                    i !== index,
+                                                            ),
                                                     });
                                                 }}
                                             >

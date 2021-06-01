@@ -63,7 +63,7 @@ export const Dashboard: React.FC = () => {
                 </div>
                 {statistics.state === 'loading' && <Loader />}
                 {statistics.state === 'hasValue' && (
-                    <div>
+                    <div data-test="statisticsContainer">
                         <div className={style.statistics}>
                             <div className={style.statistic}>
                                 <div className={style.statisticValue}>

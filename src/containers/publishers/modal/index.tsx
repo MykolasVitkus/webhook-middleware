@@ -20,10 +20,8 @@ export const DeleteModal: React.FC = () => {
         history.push(route);
     };
 
-    const [
-        deletePublisherModalState,
-        setDeletePublisherModalState,
-    ] = useRecoilState(deletePublisherModal);
+    const [deletePublisherModalState, setDeletePublisherModalState] =
+        useRecoilState(deletePublisherModal);
 
     const [publishersState, setPublishers] = useRecoilState(publishers);
 

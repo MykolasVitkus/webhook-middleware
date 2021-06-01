@@ -105,7 +105,7 @@ export const getFilteredWebhooks: (filters: Filters) => Promise<Webhook[]> = (
         .get(
             '/api/domain-events?' +
                 new URLSearchParams(
-                    pickBy(filters, (v) => v !== undefined),
+                    pickBy(filters, (v) => v !== undefined) as any,
                 ).toString(),
             {
                 headers: {
@@ -138,7 +138,7 @@ export const getFilteredWebhooksCount: (filters: Filters) => Promise<number> = (
         .get(
             '/api/domain-events/count?' +
                 new URLSearchParams(
-                    pickBy(filters, (v) => v !== undefined),
+                    pickBy(filters, (v) => v !== undefined) as any,
                 ).toString(),
             {
                 headers: {

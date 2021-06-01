@@ -1,0 +1,20 @@
+{
+    "name": "e2eTests",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "@wdio/cli": "^7.7.2",
+        "wdio-html-reporter": "^1.0.2"
+    },
+    "devDependencies": {
+        "@rpii/wdio-html-reporter": "^6.3.3",
+        "@wdio/dot-reporter": "^7.7.0",
+        "@wdio/local-runner": "^7.7.2",
+        "@wdio/mocha-framework": "^7.7.2",
+        "chromedriver": "^90.0.1",
+        "ts-node": "^10.0.0",
+        "typescript": "^4.3.2",
+        "wdio-chromedriver-service": "^7.1.0"
+    }
+}
