@@ -16,35 +16,29 @@ export const publishedWebhooksSelector = selectorFamily({
         return await getPublishedWebhooksByPublisherIdQuery(id);
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        (id: string) =>
-        ({ set }, newValue: any) =>
-            set(webhooks, (prevState: Dictionary<Webhook>) => {
-                return { ...prevState, [id]: newValue };
-            }),
+    set: (id: string) => ({ set }, newValue: any) =>
+        set(webhooks, (prevState: Dictionary<Webhook>) => {
+            return { ...prevState, [id]: newValue };
+        }),
 });
 
 export const receivedWebhooksSelector = selectorFamily({
     key: 'receivedWebhooksBySubscriberIdSelector',
-    get:
-        (id: string) =>
-        async ({ get }) => {
-            const subscriberWebhooks = fromDictionary(get(webhooks)).filter(
-                (webhook: Webhook) => {
-                    return webhook.subscriberId === id;
-                },
-            );
-            return subscriberWebhooks.length > 0
-                ? subscriberWebhooks
-                : await getReceivedWebhooksBySubscriberIdQuery(id);
-        },
+    get: (id: string) => async ({ get }) => {
+        const subscriberWebhooks = fromDictionary(get(webhooks)).filter(
+            (webhook: Webhook) => {
+                return webhook.subscriberId === id;
+            },
+        );
+        return subscriberWebhooks.length > 0
+            ? subscriberWebhooks
+            : await getReceivedWebhooksBySubscriberIdQuery(id);
+    },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        (id: string) =>
-        ({ set }, newValue: any) =>
-            set(webhooks, (prevState: Dictionary<Webhook>) => {
-                return { ...prevState, [id]: newValue };
-            }),
+    set: (id: string) => ({ set }, newValue: any) =>
+        set(webhooks, (prevState: Dictionary<Webhook>) => {
+            return { ...prevState, [id]: newValue };
+        }),
 });
 
 export const webhooksFilteredSelector = selectorFamily<Webhook[], Filters>({

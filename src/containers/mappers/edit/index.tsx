@@ -232,7 +232,8 @@ export const MappersEdit: React.FC = () => {
                                             } else {
                                                 setMapperFormErrors({
                                                     ...mapperFormErrors,
-                                                    format: 'Invalid JSON provided',
+                                                    format:
+                                                        'Invalid JSON provided',
                                                 });
                                             }
                                         }}

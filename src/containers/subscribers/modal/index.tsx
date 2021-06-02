@@ -19,8 +19,10 @@ export const DeleteModal: React.FC = () => {
     const changeRoute = (route: string) => {
         history.push(route);
     };
-    const [deleteSubscriberModalState, setDeleteSubscriberModalState] =
-        useRecoilState(deleteSubscriberModal);
+    const [
+        deleteSubscriberModalState,
+        setDeleteSubscriberModalState,
+    ] = useRecoilState(deleteSubscriberModal);
 
     const [subscribersState, setSubscribers] = useRecoilState(subscribers);
 

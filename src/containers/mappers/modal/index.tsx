@@ -16,8 +16,9 @@ export const DeleteModal: React.FC = () => {
     const changeRoute = (route: string) => {
         history.push(route);
     };
-    const [deleteMapperModalState, setDeleteMapperModalState] =
-        useRecoilState(deleteMapperModal);
+    const [deleteMapperModalState, setDeleteMapperModalState] = useRecoilState(
+        deleteMapperModal,
+    );
 
     const [mappersState, setMappers] = useRecoilState(mappers);
 

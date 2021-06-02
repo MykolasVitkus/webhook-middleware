@@ -19,33 +19,27 @@ export const mappersQuerySelector = selector({
         return await getMappersQuery();
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        () =>
-        ({ set }, newValue: Mapper[]) =>
-            set(mappers, (prevState: Dictionary<Mapper>) => {
-                return {
-                    ...prevState,
-                    ...toDictionary(newValue, 'id'),
-                };
-            }),
+    set: () => ({ set }, newValue: Mapper[]) =>
+        set(mappers, (prevState: Dictionary<Mapper>) => {
+            return {
+                ...prevState,
+                ...toDictionary(newValue, 'id'),
+            };
+        }),
 });
 
 export const mappersByIdSelector = selectorFamily({
     key: 'mappersByIdSelector',
-    get:
-        (id: string) =>
-        async ({ get }) => {
-            const mapper = get(mappers)[id];
-            if (mapper) {
-                return mapper;
-            }
-            return await getMapperByIdQuery(id);
-        },
+    get: (id: string) => async ({ get }) => {
+        const mapper = get(mappers)[id];
+        if (mapper) {
+            return mapper;
+        }
+        return await getMapperByIdQuery(id);
+    },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        (id: string) =>
-        ({ set }, newValue: any) =>
-            set(mappers, (prevState: Dictionary<Mapper>) => {
-                return { ...prevState, [id]: newValue };
-            }),
+    set: (id: string) => ({ set }, newValue: any) =>
+        set(mappers, (prevState: Dictionary<Mapper>) => {
+            return { ...prevState, [id]: newValue };
+        }),
 });

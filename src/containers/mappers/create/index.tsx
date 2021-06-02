@@ -28,8 +28,9 @@ export const MappersCreate: React.FC = () => {
 
     const [transformedFormat, setTransformedFormat] = useState({});
 
-    const [mappersForm, setMappersForm] =
-        useRecoilState<MapperForm>(createMapperForm);
+    const [mappersForm, setMappersForm] = useRecoilState<MapperForm>(
+        createMapperForm,
+    );
 
     const [mapperFormErrors, setMapperFormErrors] = useState({
         name: '',

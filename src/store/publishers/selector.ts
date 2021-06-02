@@ -15,25 +15,21 @@ export const publishersSelector = selector<Publisher[]>({
 
 export const publishersByIdSelector = selectorFamily({
     key: 'publishersByIdSelector',
-    get:
-        (id: string | null) =>
-        async ({ get }) => {
-            if (!id) {
-                return null;
-            }
-            const publisher = get(publishers)[id];
-            if (publisher) {
-                return publisher;
-            }
-            return await getPublisherByIdQuery(id);
-        },
+    get: (id: string | null) => async ({ get }) => {
+        if (!id) {
+            return null;
+        }
+        const publisher = get(publishers)[id];
+        if (publisher) {
+            return publisher;
+        }
+        return await getPublisherByIdQuery(id);
+    },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        (id: string) =>
-        ({ set }, newValue: any) =>
-            set(publishers, (prevState: Dictionary<Publisher>) => {
-                return { ...prevState, [id]: newValue };
-            }),
+    set: (id: string) => ({ set }, newValue: any) =>
+        set(publishers, (prevState: Dictionary<Publisher>) => {
+            return { ...prevState, [id]: newValue };
+        }),
 });
 
 export const publishersQuerySelector = selector({
@@ -42,13 +38,11 @@ export const publishersQuerySelector = selector({
         return await getPublishersQuery();
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        () =>
-        ({ set }, newValue: Publisher[]) =>
-            set(publishers, (prevState: Dictionary<Publisher>) => {
-                return {
-                    ...prevState,
-                    ...toDictionary(newValue, 'id'),
-                };
-            }),
+    set: () => ({ set }, newValue: Publisher[]) =>
+        set(publishers, (prevState: Dictionary<Publisher>) => {
+            return {
+                ...prevState,
+                ...toDictionary(newValue, 'id'),
+            };
+        }),
 });

@@ -105,6 +105,7 @@ export const getFilteredWebhooks: (filters: Filters) => Promise<Webhook[]> = (
         .get(
             '/api/domain-events?' +
                 new URLSearchParams(
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     pickBy(filters, (v) => v !== undefined) as any,
                 ).toString(),
             {
@@ -138,6 +139,7 @@ export const getFilteredWebhooksCount: (filters: Filters) => Promise<number> = (
         .get(
             '/api/domain-events/count?' +
                 new URLSearchParams(
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     pickBy(filters, (v) => v !== undefined) as any,
                 ).toString(),
             {

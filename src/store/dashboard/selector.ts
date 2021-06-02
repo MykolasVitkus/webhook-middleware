@@ -22,10 +22,9 @@ export const statisticsSelector = selector({
         };
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        () =>
-        ({ set }, newValue: Statistics) =>
-            set(statistics, (prevState: Statistics) => {
-                return newValue;
-            }),
+    set: () => ({ set }, newValue: Statistics) =>
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        set(statistics, (_: Statistics) => {
+            return newValue;
+        }),
 });

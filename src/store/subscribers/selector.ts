@@ -22,22 +22,18 @@ export const subscribersSelector = selector<Subscriber[]>({
 
 export const subscribersByIdSelector = selectorFamily({
     key: 'subscribersByIdSelector',
-    get:
-        (id: string) =>
-        async ({ get }) => {
-            const subscriber = get(subscribers)[id];
-            if (subscriber) {
-                return subscriber;
-            }
-            return await getSubscriberByIdQuery(id);
-        },
+    get: (id: string) => async ({ get }) => {
+        const subscriber = get(subscribers)[id];
+        if (subscriber) {
+            return subscriber;
+        }
+        return await getSubscriberByIdQuery(id);
+    },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set:
-        (id: string) =>
-        ({ set }, newValue: any) =>
-            set(subscribers, (prevState: Dictionary<Subscriber>) => {
-                return { ...prevState, [id]: newValue };
-            }),
+    set: (id: string) => ({ set }, newValue: any) =>
+        set(subscribers, (prevState: Dictionary<Subscriber>) => {
+            return { ...prevState, [id]: newValue };
+        }),
 });
 
 export const subscriptionsBySubscriberSelector = selectorFamily<
