@@ -72,6 +72,7 @@ const Publishers: React.FC = () => {
                             handleClick={() =>
                                 changeRoute(Routes.PublishersNew)
                             }
+                            data-test="publishersNew"
                         >
                             <FaPlus className={style.iconMargin}></FaPlus>
                             New
@@ -98,77 +99,120 @@ const Publishers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {publishersList.map((val) => {
+                            {publishersList.map((val, index) => {
                                 return (
-                                    <tr key={val.id}>
-                                        <td>{val.name}</td>
-                                        <td className={style.row}>
-                                            <Clipboard
-                                                className={
-                                                    style.clipboardButton
-                                                }
-                                                data-clipboard-text={
-                                                    window.location.protocol +
-                                                    '//' +
-                                                    window.location.host +
-                                                    '/api/webhooks/' +
-                                                    val.id
+                                    <>
+                                        <tr key={val.id}>
+                                            <td
+                                                data-test={
+                                                    index ===
+                                                    publishersList.length - 1
+                                                        ? 'lastPublisherName'
+                                                        : undefined
                                                 }
                                             >
-                                                <FaCopy />
-                                            </Clipboard>
-                                            <div className={style.urlTd}>
-                                                {window.location.protocol +
-                                                    '//' +
-                                                    window.location.host +
-                                                    '/api/webhooks/' +
-                                                    val.id}
-                                            </div>
-                                        </td>
-                                        <td>{val.createdAt.toDateString()}</td>
-                                        <td className={style.actions}>
-                                            <Button
-                                                handleClick={() =>
-                                                    changeRoute(
-                                                        Routes.PublishersView.replace(
-                                                            ':id',
-                                                            val.id,
-                                                        ),
-                                                    )
-                                                }
-                                            >
-                                                <FaEye
-                                                    className={style.iconMargin}
-                                                ></FaEye>
-                                                View
-                                            </Button>
-                                            <Button
-                                                handleClick={() =>
-                                                    changeRoute(
-                                                        Routes.PublishersEdit.replace(
-                                                            ':id',
-                                                            val.id,
-                                                        ),
-                                                    )
-                                                }
-                                            >
-                                                <FaEdit
-                                                    className={style.iconMargin}
-                                                ></FaEdit>
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                handleClick={() =>
-                                                    openDeleteModal(val.id)
-                                                }
-                                            >
-                                                <FaTrash
-                                                    className={style.iconMargin}
-                                                ></FaTrash>
-                                                Delete
-                                            </Button>
-                                        </td>
-                                    </tr>
+                                                {val.name}
+                                            </td>
+                                            <td className={style.row}>
+                                                <Clipboard
+                                                    className={
+                                                        style.clipboardButton
+                                                    }
+                                                    data-clipboard-text={
+                                                        window.location
+                                                            .protocol +
+                                                        '//' +
+                                                        window.location.host +
+                                                        '/api/webhooks/' +
+                                                        val.id
+                                                    }
+                                                >
+                                                    <FaCopy />
+                                                </Clipboard>
+                                                <div
+                                                    className={style.urlTd}
+                                                    data-test={
+                                                        index ===
+                                                        publishersList.length -
+                                                            1
+                                                            ? 'lastPublisherUrl'
+                                                            : undefined
+                                                    }
+                                                >
+                                                    {window.location.protocol +
+                                                        '//' +
+                                                        window.location.host +
+                                                        '/api/webhooks/' +
+                                                        val.id}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {val.createdAt.toDateString()}
+                                            </td>
+                                            <td className={style.actions}>
+                                                <Button
+                                                    handleClick={() =>
+                                                        changeRoute(
+                                                            Routes.PublishersView.replace(
+                                                                ':id',
+                                                                val.id,
+                                                            ),
+                                                        )
+                                                    }
+                                                >
+                                                    <FaEye
+                                                        className={
+                                                            style.iconMargin
+                                                        }
+                                                    ></FaEye>
+                                                    View
+                                                </Button>
+                                                <Button
+                                                    handleClick={() =>
+                                                        changeRoute(
+                                                            Routes.PublishersEdit.replace(
+                                                                ':id',
+                                                                val.id,
+                                                            ),
+                                                        )
+                                                    }
+                                                    data-test={
+                                                        index ===
+                                                        publishersList.length -
+                                                            1
+                                                            ? 'lastPublisherEdit'
+                                                            : undefined
+                                                    }
+                                                >
+                                                    <FaEdit
+                                                        className={
+                                                            style.iconMargin
+                                                        }
+                                                    ></FaEdit>
+                                                    Edit
+                                                </Button>
+                                                <Button
+                                                    handleClick={() =>
+                                                        openDeleteModal(val.id)
+                                                    }
+                                                    data-test={
+                                                        index ===
+                                                        publishersList.length -
+                                                            1
+                                                            ? 'lastPublisherDelete'
+                                                            : undefined
+                                                    }
+                                                >
+                                                    <FaTrash
+                                                        className={
+                                                            style.iconMargin
+                                                        }
+                                                    ></FaTrash>
+                                                    Delete
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    </>
                                 );
                             })}
                         </tbody>

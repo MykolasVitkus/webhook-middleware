@@ -5,6 +5,7 @@
     "license": "MIT",
     "dependencies": {
         "@wdio/cli": "^7.7.2",
+        "@wdio/selenium-standalone-service": "^7.7.0",
         "wdio-html-reporter": "^1.0.2"
     },
     "devDependencies": {

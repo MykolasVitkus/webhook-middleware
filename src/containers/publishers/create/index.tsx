@@ -77,7 +77,7 @@ export const PublishersNew: React.FC = () => {
     return (
         <Container>
             <Card>
-                <h1>Add Publisher</h1>
+                <h1 data-test="createPublishersTitle">Add Publisher</h1>
                 <h2>Add a new publisher</h2>
                 <Divider />
                 <form className={style.form}>
@@ -92,15 +92,22 @@ export const PublishersNew: React.FC = () => {
                                     : style.input
                             }
                             autoComplete="off"
+                            data-test="createPublisherName"
                             value={publishersForm.name}
                             onChange={(e) => onChangeName(e)}
                         ></input>
-                        <div className={style.errorMessage}>
+                        <div
+                            className={style.errorMessage}
+                            data-test="createPublisherNameError"
+                        >
                             {publishersFormErrors.name}
                         </div>
                     </div>
                     <div className={style.button}>
-                        <Button handleClick={(e) => submitForm(e)}>
+                        <Button
+                            handleClick={(e) => submitForm(e)}
+                            data-test="createPublisherSubmit"
+                        >
                             Submit
                         </Button>
                     </div>

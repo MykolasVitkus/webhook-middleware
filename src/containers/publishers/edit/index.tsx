@@ -103,7 +103,7 @@ export const PublishersEdit: React.FC = () => {
                 {!isLoaded && <Loader />}
                 {isLoaded && (
                     <div>
-                        <h1>Edit Publisher</h1>
+                        <h1 data-test="editPublishersTitle">Edit Publisher</h1>
                         <h2>Change the parameters of this publisher</h2>
                         <Divider />
                         <form className={style.form}>
@@ -120,13 +120,20 @@ export const PublishersEdit: React.FC = () => {
                                     autoComplete="off"
                                     value={publishersForm.name}
                                     onChange={(e) => onChangeName(e)}
+                                    data-test="editPublisherName"
                                 ></input>
-                                <div className={style.errorMessage}>
+                                <div
+                                    className={style.errorMessage}
+                                    data-test="editPublisherNameError"
+                                >
                                     {publishersFormErrors.name}
                                 </div>
                             </div>
                             <div className={style.button}>
-                                <Button handleClick={(e) => submitForm(e)}>
+                                <Button
+                                    handleClick={(e) => submitForm(e)}
+                                    data-test="editPublisherSubmit"
+                                >
                                     Submit
                                 </Button>
                             </div>

@@ -51,7 +51,9 @@ export const DeleteModal: React.FC = () => {
             {deletePublisherModalState.open && (
                 <Modal>
                     <div className={style.modalContent}>
-                        <h1>Delete Publisher</h1>
+                        <h1 data-test="deletePublisherModalTitle">
+                            Delete Publisher
+                        </h1>
                         <h2>This action is permanent</h2>
                         <Divider />
                         <p>Are you sure you want to delete this publisher?</p>
@@ -62,10 +64,14 @@ export const DeleteModal: React.FC = () => {
                                         deletePublisherModalState.publisherId,
                                     )
                                 }
+                                data-test="deletePublisherModalConfirm"
                             >
                                 Confirm
                             </Button>
-                            <Button handleClick={() => closeModal()}>
+                            <Button
+                                handleClick={() => closeModal()}
+                                data-test="deletePublisherModalDeny"
+                            >
                                 Deny
                             </Button>
                         </div>
