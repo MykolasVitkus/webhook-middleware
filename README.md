@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+<p align="center">
+  <img src="https://media.discordapp.net/attachments/637952914953863182/850098269870882876/client.png" alt="Webhook Middleware Logo" />
+</p>
+<p align="center">
+<a href="https://scrutinizer-ci.com/g/MykolasVitkus/webhook-middleware-client" target="_blank"><img src="https://scrutinizer-ci.com/g/MykolasVitkus/webhook-middleware-client/badges/quality-score.png?b=master" alt="Quality" /></a>
+<a href="https://scrutinizer-ci.com/g/MykolasVitkus/webhook-middleware-client" target="_blank"><img src="https://scrutinizer-ci.com/g/MykolasVitkus/webhook-middleware-client/badges/build.png?b=master" alt="Build" /></a>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+</p>
+  <p align="center">A middleware system purposed to manage webhooks by monitoring, transforming and rerouting received webhook messages.<br> Server side can be found at <a href="https://github.com/MykolasVitkus/webhook-middleware-server">webhook-middleware-client</a> </p>
+    
 
-## Available Scripts
+## Description
 
-In the project directory, you can run:
+Webhook Middleware is an open-source system used to manage webhooks. This system allows you to dynamically map incoming webhooks into your own specified structure (by using JsonPath), review latest received and transformed webhooks and monitor their frequencies.
 
-### `yarn start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To fully setup the system, you must meet these requirements:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* A running instance of MongoDB database (mongo:4.4 image recommended)
+* A running instance of [webhook-middleware-client](https://github.com/MykolasVitkus/webhook-middleware-client) (mykolasv/webhook-middleware-app:latest image recommended) with the following environment variables:
+  * SERVER_URL - host url of webhook-middleware-server
+* A running instance of [webhook-middleware-server](https://github.com/MykolasVitkus/webhook-middleware-server) (mykolasv/webhook-middleware-server:latest image recommended) with the following environment variables:
+  * DATABASE_URL - used to access the mongoDB database
+  * JWT_SECRET - unique secret key to sign JWT tokens
 
-### `yarn test`
+After setting up the system, admin user can be created with a console command executed inside **webhook-middleware-server**:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```$ yarn console create-user <username> <password>```
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Support
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Webhook Middleware is an MIT-licensed open source project. Any contribution to this project is welcome and will be valued.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Stay in touch
 
-### `yarn eject`
+Author - [Mykolas Vitkus](https://www.linkedin.com/in/mykolas-vitkus-7b9159152/)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## License
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+  Webhook Middleware is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
