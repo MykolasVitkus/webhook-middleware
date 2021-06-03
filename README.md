@@ -6,7 +6,7 @@
 <a href="https://scrutinizer-ci.com/g/MykolasVitkus/webhook-middleware-client" target="_blank"><img src="https://scrutinizer-ci.com/g/MykolasVitkus/webhook-middleware-client/badges/build.png?b=master" alt="Build" /></a>
 
 </p>
-  <p align="center">A middleware system purposed to manage webhooks by monitoring, transforming and rerouting received webhook messages.<br> Server side can be found at <a href="https://github.com/MykolasVitkus/webhook-middleware-server">webhook-middleware-client</a> </p>
+  <p align="center">A middleware system purposed to manage webhooks by monitoring, transforming and rerouting received webhook messages.<br> Server side can be found at <a href="https://github.com/MykolasVitkus/webhook-middleware-server">webhook-middleware-server</a> </p>
     
 
 ## Description
