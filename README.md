@@ -39,4 +39,4 @@ Author - [Mykolas Vitkus](https://www.linkedin.com/in/mykolas-vitkus-7b9159152/)
 
 ## License
 
-  Webhook Middleware is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+  Webhook Middleware is [MIT licensed](https://github.com/MykolasVitkus/webhook-middleware-client/blob/master/LICENSE).
