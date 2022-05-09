@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { setupInterceptorsTo } from '../../interceptors';
+import { Pagination } from '../../utils/types';
 import { getToken } from '../auth/service';
 import { Mapper, MapperDTO, MapperForm } from './types';
 
@@ -8,18 +9,25 @@ const axiosInstance = setupInterceptorsTo(axios.create());
 interface GetMappersResponse extends AxiosResponse {
     data: MapperDTO[];
 }
-
+interface GetMappersCountResponse extends AxiosResponse {
+    data: number;
+}
 interface GetMapperResponse extends AxiosResponse {
     data: MapperDTO;
 }
 
-export const getMappersQuery: () => Promise<Mapper[]> = () =>
+export const getMappersQuery: (pagination: Pagination) => Promise<Mapper[]> = (
+    pagination,
+) =>
     axiosInstance
-        .get('/api/mappers', {
-            headers: {
-                Authorization: 'Bearer '.concat(getToken() as string),
+        .get(
+            `/api/mappers?offset=${pagination.offset}&limit=${pagination.limit}`,
+            {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
             },
-        })
+        )
         .then((res: GetMappersResponse) => {
             return res.data.map((val: MapperDTO) => {
                 return {
@@ -30,6 +38,17 @@ export const getMappersQuery: () => Promise<Mapper[]> = () =>
                     createdAt: new Date(val.createdAt),
                 };
             });
+        });
+
+export const getMappersCountQuery: () => Promise<number> = () =>
+    axiosInstance
+        .get('/api/mappers/count', {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
+        .then((res: GetMappersCountResponse) => {
+            return res.data;
         });
 
 export const getMapperByIdQuery: (id: string) => Promise<Mapper> = (

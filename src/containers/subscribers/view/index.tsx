@@ -1,18 +1,15 @@
 import React from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router';
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 import Button from '../../../components/button';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import Divider from '../../../components/divider';
 import Loader from '../../../components/loader';
 import { deleteSubscriberModal } from '../../../store/subscribers/atom';
-import {
-    subscribersByIdSelector,
-    subscriptionsBySubscriberSelector,
-} from '../../../store/subscribers/selector';
-import { Subscriber, SubscriberType } from '../../../store/subscribers/types';
+import { subscribersByIdSelector } from '../../../store/subscribers/selector';
+import { Subscriber } from '../../../store/subscribers/types';
 import { receivedWebhooksSelector } from '../../../store/webhooks/selector';
 import Routes from '../../../utils/routes';
 import { SubscriberWebhooksList } from '../../webhooks/received-list';

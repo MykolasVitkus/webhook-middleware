@@ -1,24 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import style from './style.module.scss';
-import { publishers } from '../../../store/publishers';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaCopy, FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
-import { getPublishersQuery } from '../../../store/publishers/requests';
 import {
-    deletePublisherModal,
-    loadedPublishersList,
-} from '../../../store/publishers/atom';
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaAngleLeft,
+    FaAngleRight,
+    FaCopy,
+    FaEdit,
+    FaEye,
+    FaPlus,
+    FaTrash,
+} from 'react-icons/fa';
+import { deletePublisherModal } from '../../../store/publishers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
-import { publishersSelector } from '../../../store/publishers/selector';
-import { toDictionary } from '../../../utils/parsers';
+import {
+    publishersCountSelector,
+    publishersSelectorFamily,
+} from '../../../store/publishers/selector';
 import { DeleteModal } from '../modal';
 import Clipboard from 'react-clipboard.js';
 import Loader from '../../../components/loader';
+import { Pagination } from '../../../utils/types';
 
 const Publishers: React.FC = () => {
     const history = useHistory();
@@ -27,23 +35,26 @@ const Publishers: React.FC = () => {
         history.push(route);
     };
 
-    const [publishersState, setPublishers] = useRecoilState(publishers);
-    const [isLoaded, setIsLoaded] = useRecoilState(loadedPublishersList);
-    const publishersList = useRecoilValue(publishersSelector);
+    const paginationLimit = 20;
 
-    useEffect(() => {
-        const getPublishers = async () => {
-            const publishers = await getPublishersQuery();
-            setPublishers({
-                ...publishersState,
-                ...toDictionary(publishers, 'id'),
-            });
-            setIsLoaded(true);
-        };
-        if (!isLoaded) {
-            getPublishers();
-        }
-    }, [isLoaded]);
+    const [pagination, setPagination] = useState<Pagination>({
+        offset: 0,
+        limit: paginationLimit,
+        page: 1,
+    });
+
+    const setPage = (page: number, pagination: Pagination) => {
+        setPagination({
+            ...pagination,
+            offset: (page - 1) * pagination.limit,
+            page: page,
+        });
+    };
+
+    const publishersList = useRecoilValueLoadable(
+        publishersSelectorFamily(pagination),
+    );
+    const publishersCount = useRecoilValueLoadable(publishersCountSelector);
 
     const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -80,8 +91,8 @@ const Publishers: React.FC = () => {
                 </div>
 
                 <Divider />
-                {!isLoaded && <Loader />}
-                {isLoaded && (
+                {publishersList.state === 'loading' && <Loader />}
+                {publishersList.state === 'hasValue' && (
                     <table className={style.table}>
                         <thead>
                             <tr>
@@ -98,7 +109,7 @@ const Publishers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {publishersList.map((val) => {
+                            {publishersList.contents.map((val) => {
                                 return (
                                     <tr key={val.id}>
                                         <td>{val.name}</td>
@@ -173,6 +184,69 @@ const Publishers: React.FC = () => {
                             })}
                         </tbody>
                     </table>
+                )}
+                <Divider />
+                {publishersCount.state === 'hasValue' && (
+                    <div className={style.pagination}>
+                        <Button
+                            handleClick={() => {
+                                setPage(1, pagination);
+                            }}
+                            disabled={pagination.page === 1}
+                        >
+                            <FaAngleDoubleLeft />
+                        </Button>
+                        <Button
+                            handleClick={() =>
+                                setPage(pagination.page - 1, pagination)
+                            }
+                            disabled={pagination.page === 1}
+                        >
+                            <FaAngleLeft />
+                        </Button>
+                        <div className={style.paginationText}>
+                            {pagination.page} of{' '}
+                            {publishersCount.contents < paginationLimit
+                                ? 1
+                                : Math.floor(
+                                      publishersCount.contents /
+                                          paginationLimit,
+                                  ) + 1}
+                        </div>
+                        <Button
+                            handleClick={() => {
+                                setPage(pagination.page + 1, pagination);
+                            }}
+                            disabled={
+                                pagination.page * paginationLimit >
+                                publishersCount.contents
+                            }
+                        >
+                            <FaAngleRight />
+                        </Button>
+                        <Button
+                            handleClick={() => {
+                                setPage(
+                                    Math.floor(
+                                        publishersCount.contents /
+                                            paginationLimit,
+                                    ) + 1,
+                                    pagination,
+                                );
+                            }}
+                            disabled={
+                                publishersCount.contents <= paginationLimit ||
+                                pagination.page ===
+                                    Math.floor(
+                                        publishersCount.contents /
+                                            paginationLimit,
+                                    ) +
+                                        1
+                            }
+                        >
+                            <FaAngleDoubleRight />
+                        </Button>
+                    </div>
                 )}
             </Card>
         </Container>

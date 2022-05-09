@@ -138,7 +138,9 @@
     left: 0;
     width: calc(100% - 1rem);
     padding-right: 6px;
-    height: unset;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dropDownArrow {

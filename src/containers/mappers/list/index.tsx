@@ -1,23 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import style from './style.module.scss';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import {
-    deleteMapperModal,
-    loadedMappersList,
-} from '../../../store/mappers/atom';
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaAngleLeft,
+    FaAngleRight,
+    FaEdit,
+    FaEye,
+    FaPlus,
+    FaTrash,
+} from 'react-icons/fa';
+import { deleteMapperModal } from '../../../store/mappers/atom';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
-import { toDictionary } from '../../../utils/parsers';
 import { DeleteModal } from '../modal';
-import { getMappersQuery } from '../../../store/mappers/requests';
-import { mappers } from '../../../store/mappers/atom';
-import { mappersSelector } from '../../../store/mappers/selector';
+import {
+    mappersCountSelector,
+    mappersSelector,
+} from '../../../store/mappers/selector';
 import Loader from '../../../components/loader';
+import { Pagination } from '../../../utils/types';
 
 const Mappers: React.FC = () => {
     const history = useHistory();
@@ -26,23 +33,24 @@ const Mappers: React.FC = () => {
         history.push(route);
     };
 
-    const [mappersState, setMappers] = useRecoilState(mappers);
-    const [isLoaded, setIsLoaded] = useRecoilState(loadedMappersList);
-    const mappersList = useRecoilValue(mappersSelector);
+    const paginationLimit = 20;
 
-    useEffect(() => {
-        const getMappers = async () => {
-            const mappers = await getMappersQuery();
-            setMappers({
-                ...mappersState,
-                ...toDictionary(mappers, 'id'),
-            });
-            setIsLoaded(true);
-        };
-        if (!isLoaded) {
-            getMappers();
-        }
-    }, [isLoaded]);
+    const [pagination, setPagination] = useState<Pagination>({
+        offset: 0,
+        limit: paginationLimit,
+        page: 1,
+    });
+
+    const setPage = (page: number, pagination: Pagination) => {
+        setPagination({
+            ...pagination,
+            offset: (page - 1) * pagination.limit,
+            page: page,
+        });
+    };
+
+    const mappersList = useRecoilValueLoadable(mappersSelector(pagination));
+    const mappersCount = useRecoilValueLoadable(mappersCountSelector);
 
     const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -77,8 +85,8 @@ const Mappers: React.FC = () => {
                 </div>
 
                 <Divider />
-                {!isLoaded && <Loader />}
-                {isLoaded && (
+                {mappersList.state === 'loading' && <Loader />}
+                {mappersList.state === 'hasValue' && (
                     <table className={style.table}>
                         <thead>
                             <tr>
@@ -92,7 +100,7 @@ const Mappers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {mappersList.map((val) => {
+                            {mappersList.contents.map((val) => {
                                 return (
                                     <tr key={val.id}>
                                         <td>{val.name}</td>
@@ -144,6 +152,66 @@ const Mappers: React.FC = () => {
                             })}
                         </tbody>
                     </table>
+                )}
+                <Divider />
+                {mappersCount.state === 'hasValue' && (
+                    <div className={style.pagination}>
+                        <Button
+                            handleClick={() => {
+                                setPage(1, pagination);
+                            }}
+                            disabled={pagination.page === 1}
+                        >
+                            <FaAngleDoubleLeft />
+                        </Button>
+                        <Button
+                            handleClick={() =>
+                                setPage(pagination.page - 1, pagination)
+                            }
+                            disabled={pagination.page === 1}
+                        >
+                            <FaAngleLeft />
+                        </Button>
+                        <div className={style.paginationText}>
+                            {pagination.page} of{' '}
+                            {mappersCount.contents < paginationLimit
+                                ? 1
+                                : Math.floor(
+                                      mappersCount.contents / paginationLimit,
+                                  ) + 1}
+                        </div>
+                        <Button
+                            handleClick={() => {
+                                setPage(pagination.page + 1, pagination);
+                            }}
+                            disabled={
+                                pagination.page * paginationLimit >
+                                mappersCount.contents
+                            }
+                        >
+                            <FaAngleRight />
+                        </Button>
+                        <Button
+                            handleClick={() => {
+                                setPage(
+                                    Math.floor(
+                                        mappersCount.contents / paginationLimit,
+                                    ) + 1,
+                                    pagination,
+                                );
+                            }}
+                            disabled={
+                                mappersCount.contents <= paginationLimit ||
+                                pagination.page ===
+                                    Math.floor(
+                                        mappersCount.contents / paginationLimit,
+                                    ) +
+                                        1
+                            }
+                        >
+                            <FaAngleDoubleRight />
+                        </Button>
+                    </div>
                 )}
             </Card>
         </Container>

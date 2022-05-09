@@ -19,6 +19,7 @@ export const LoginForm: React.FC = () => {
         history.push(Routes.Dashboard);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const submitForm = async (e) => {
         const token = await ObtainTokenQuery(loginFormState);
         if (token) {

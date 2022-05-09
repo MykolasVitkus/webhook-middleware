@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { setupInterceptorsTo } from '../../interceptors';
+import { Pagination } from '../../utils/types';
 import { getToken } from '../auth/service';
 import { Publisher, PublisherDTO, PublisherForm } from './types';
 
@@ -9,17 +10,26 @@ interface GetPublishersResponse extends AxiosResponse {
     data: PublisherDTO[];
 }
 
+interface GetPublishersCountResponse extends AxiosResponse {
+    data: number;
+}
+
 interface GetPublisherResponse extends AxiosResponse {
     data: PublisherDTO;
 }
 
-export const getPublishersQuery: () => Promise<Publisher[]> = () =>
+export const getPublishersQuery: (
+    pagination: Pagination,
+) => Promise<Publisher[]> = (pagination) =>
     axiosInstance
-        .get('/api/publishers', {
-            headers: {
-                Authorization: 'Bearer '.concat(getToken() as string),
+        .get(
+            `/api/publishers?offset=${pagination.offset}&limit=${pagination.limit}`,
+            {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
             },
-        })
+        )
         .then((res: GetPublishersResponse) => {
             return res.data.map((val: PublisherDTO) => {
                 return {
@@ -28,6 +38,17 @@ export const getPublishersQuery: () => Promise<Publisher[]> = () =>
                     createdAt: new Date(val.createdAt),
                 };
             });
+        });
+
+export const getPublishersCountQuery: () => Promise<number> = () =>
+    axiosInstance
+        .get('/api/publishers/count', {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
+        .then((res: GetPublishersCountResponse) => {
+            return res.data;
         });
 
 export const getPublisherByIdQuery: (id: string) => Promise<Publisher> = (

@@ -20,8 +20,6 @@ import {
     FaAngleDoubleRight,
     FaAngleLeft,
     FaAngleRight,
-    FaArrowLeft,
-    FaArrowRight,
     FaCaretDown,
     FaCaretUp,
 } from 'react-icons/fa';

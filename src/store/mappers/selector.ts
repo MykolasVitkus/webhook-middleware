@@ -1,22 +1,25 @@
 import { selector, selectorFamily } from 'recoil';
-import { fromDictionary, toDictionary } from '../../utils/parsers';
-import { Dictionary } from '../../utils/types';
+import { toDictionary } from '../../utils/parsers';
+import { Dictionary, Pagination } from '../../utils/types';
 import { mappers } from './atom';
-import { getMapperByIdQuery, getMappersQuery } from './requests';
+import {
+    getMapperByIdQuery,
+    getMappersCountQuery,
+    getMappersQuery,
+} from './requests';
 import { Mapper } from './types';
 
-export const mappersSelector = selector<Mapper[]>({
+export const mappersSelector = selectorFamily<Mapper[], Pagination>({
     key: 'mappersSelector',
-    get: ({ get }) => {
-        const mappersList = get(mappers);
-        return fromDictionary(mappersList);
+    get: (pagination: Pagination) => async () => {
+        return await getMappersQuery(pagination);
     },
 });
 
 export const mappersQuerySelector = selector({
     key: 'mappersQuerySelector',
     get: async () => {
-        return await getMappersQuery();
+        return await getMappersQuery({ offset: 0, limit: 0, page: 1 });
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     set: () => ({ set }, newValue: Mapper[]) =>
@@ -26,6 +29,13 @@ export const mappersQuerySelector = selector({
                 ...toDictionary(newValue, 'id'),
             };
         }),
+});
+
+export const mappersCountSelector = selector({
+    key: 'mappersCountQuerySelector',
+    get: async () => {
+        return await getMappersCountQuery();
+    },
 });
 
 export const mappersByIdSelector = selectorFamily({

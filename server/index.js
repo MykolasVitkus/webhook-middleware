@@ -4,19 +4,13 @@ const express = require('express');
 const { GracefulShutdownManager } = require('@moebius/http-graceful-shutdown');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 require('dotenv-flow').config();
+const querystring = require('query-string');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 const PORT = 3000;
 
-const options = {
-    target: process.env.SERVER_URL,
-    changeOrigin: true,
-    pathRewrite: {
-        '/api': '',
-    },
-    ws: true,
-};
 const buildPath = resolve(__dirname, '../build');
 
 const staticConf = {
@@ -34,9 +28,49 @@ const staticConf = {
 };
 app.use(express.static(buildPath, staticConf));
 
-const proxyMiddleware = createProxyMiddleware(options);
+const rewriteContentType = (proxyReq, req, res) => {
+    if (!req.body || !Object.keys(req.body).length) {
+        return;
+    }
+
+    const contentType = proxyReq.getHeader('Content-Type');
+    const writeBody = (bodyData) => {
+        proxyReq.setHeader('Content-Type', 'application/json');
+        proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+        proxyReq.write(bodyData);
+    };
+
+    if (contentType.includes('application/json')) {
+        writeBody(JSON.stringify(req.body));
+    }
+
+    if (contentType.includes('text/plain')) {
+        writeBody(req.body);
+    }
+
+    if (contentType === 'application/x-www-form-urlencoded') {
+        writeBody(querystring.stringify(req.body));
+    }
+};
+
+const options = {
+    target: process.env.SERVER_URL,
+    changeOrigin: true,
+    pathRewrite: {
+        '/api': '',
+    },
+    ws: true,
+    onProxyReq: rewriteContentType,
+};
+
+// //Body parser
+app.use(bodyParser.text());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // API proxy
+const proxyMiddleware = createProxyMiddleware(options);
+
 app.use('/api', proxyMiddleware);
 
 app.use('/', history());

@@ -54,3 +54,14 @@
 .row {
     display: flex;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginationText {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}

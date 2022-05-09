@@ -1,6 +1,8 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 require('dotenv-flow').config();
 const axios = require('axios');
+const bodyParser = require('body-parser');
+const querystring = require('query-string');
 
 module.exports = function (app) {
     axios.interceptors.response.use(
@@ -12,6 +14,36 @@ module.exports = function (app) {
             return Promise.reject(error);
         },
     );
+
+    const rewriteContentType = (proxyReq, req, res) => {
+        if (!req.body || !Object.keys(req.body).length) {
+            return;
+        }
+
+        const contentType = proxyReq.getHeader('Content-Type');
+        const writeBody = (bodyData) => {
+            proxyReq.setHeader('Content-Type', 'application/json');
+            proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+            proxyReq.write(bodyData);
+        };
+
+        if (contentType.includes('application/json')) {
+            writeBody(JSON.stringify(req.body));
+        }
+
+        if (contentType.includes('text/plain')) {
+            writeBody(req.body);
+        }
+
+        if (contentType === 'application/x-www-form-urlencoded') {
+            writeBody(querystring.stringify(req.body));
+        }
+    };
+
+    app.use(bodyParser.text());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+
     app.use(
         '/api',
         createProxyMiddleware({
@@ -21,6 +53,7 @@ module.exports = function (app) {
                 '/api': '',
             },
             ws: true,
+            onProxyReq: rewriteContentType,
         }),
     );
 };

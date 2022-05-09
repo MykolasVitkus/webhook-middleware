@@ -1,10 +1,14 @@
 version: '3.7'
 
 services:
-  bakis-app:
+  app:
     image: node:latest
     entrypoint: 'tail -f /dev/null'
     working_dir: /app
+    ports:
+      - 3000:3000
+    environment:
+      SERVER_URL: http://server:3001/
     volumes:
       - ./:/app:rw,cached
     networks:

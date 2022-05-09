@@ -50,7 +50,6 @@ export const SubscribersEdit: React.FC = () => {
     const mappersState = useRecoilValueLoadable(mappersQuerySelector);
 
     const [subscribersState, setSubscribers] = useRecoilState(subscribers);
-    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         const getSubscriber = async () => {
@@ -63,7 +62,6 @@ export const SubscribersEdit: React.FC = () => {
                 webhookUrl: subscriber.webhookUrl,
                 subscribedTo: subscriber.subscribedTo,
             });
-            setIsLoaded(true);
         };
         getSubscriber();
     }, []);

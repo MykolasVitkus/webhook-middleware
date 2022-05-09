@@ -1,10 +1,13 @@
 import { selector, selectorFamily } from 'recoil';
-import { fromDictionary } from '../../utils/parsers';
-import { Dictionary } from '../../utils/types';
+import { Dictionary, Pagination } from '../../utils/types';
 import { getMapperByIdQuery } from '../mappers/requests';
 import { getPublisherByIdQuery } from '../publishers/requests';
 import { subscribers } from './atom';
-import { getSubscriberByIdQuery } from './requests';
+import {
+    getSubscriberByIdQuery,
+    getSubscribersCountQuery,
+    getSubscribersQuery,
+} from './requests';
 import {
     SubscriberType,
     ResolvedSubscribedPublisher,
@@ -12,11 +15,17 @@ import {
     Subscriber,
 } from './types';
 
-export const subscribersSelector = selector<Subscriber[]>({
+export const subscribersSelector = selectorFamily<Subscriber[], Pagination>({
     key: 'subscribersSelector',
-    get: ({ get }) => {
-        const subscribersList = get(subscribers);
-        return fromDictionary(subscribersList);
+    get: (pagination: Pagination) => async () => {
+        return getSubscribersQuery(pagination);
+    },
+});
+
+export const subscribersCountSelector = selector({
+    key: 'subscribersCountQuerySelector',
+    get: async () => {
+        return await getSubscribersCountQuery();
     },
 });
 

@@ -23,7 +23,7 @@ export const statisticsSelector = selector({
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     set: () => ({ set }, newValue: Statistics) =>
-        set(statistics, (prevState: Statistics) => {
+        set(statistics, () => {
             return newValue;
         }),
 });

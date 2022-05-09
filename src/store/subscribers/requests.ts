@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { setupInterceptorsTo } from '../../interceptors';
+import { Pagination } from '../../utils/types';
 import { getToken } from '../auth/service';
 import { Subscriber, SubscriberDTO, SubscriberForm } from './types';
 
@@ -9,17 +10,26 @@ interface GetSubscribersResponse extends AxiosResponse {
     data: SubscriberDTO[];
 }
 
+interface GetSubscribersCountResponse extends AxiosResponse {
+    data: number;
+}
+
 interface GetSubscriberResponse extends AxiosResponse {
     data: SubscriberDTO;
 }
 
-export const getSubscribersQuery: () => Promise<Subscriber[]> = () =>
+export const getSubscribersQuery: (
+    pagination: Pagination,
+) => Promise<Subscriber[]> = (pagination) =>
     axiosInstance
-        .get('/api/subscribers', {
-            headers: {
-                Authorization: 'Bearer '.concat(getToken() as string),
+        .get(
+            `/api/subscribers?offset=${pagination.offset}&limit=${pagination.limit}`,
+            {
+                headers: {
+                    Authorization: 'Bearer '.concat(getToken() as string),
+                },
             },
-        })
+        )
         .then((res: GetSubscribersResponse) => {
             return res.data.map((val: SubscriberDTO) => {
                 return {
@@ -30,6 +40,17 @@ export const getSubscribersQuery: () => Promise<Subscriber[]> = () =>
                     createdAt: new Date(val.createdAt),
                 };
             });
+        });
+
+export const getSubscribersCountQuery: () => Promise<number> = () =>
+    axiosInstance
+        .get('/api/subscribers/count', {
+            headers: {
+                Authorization: 'Bearer '.concat(getToken() as string),
+            },
+        })
+        .then((res: GetSubscribersCountResponse) => {
+            return res.data;
         });
 
 export const getSubscriberByIdQuery: (id: string) => Promise<Subscriber> = (

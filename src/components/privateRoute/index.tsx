@@ -3,10 +3,8 @@
 
 // If they are: they proceed to the page
 // If not: they are redirected to the login page.
-import React, { Component } from 'react';
-import { OmitNative } from 'react-router';
+import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { Path } from 'typescript';
 import { isLoggedIn } from '../../store/auth/service';
 
 // eslint-disable-next-line

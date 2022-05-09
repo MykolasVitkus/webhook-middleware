@@ -1,24 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from '../../../components/card';
 import Container from '../../../components/container';
 import style from './style.module.scss';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 import Divider from '../../../components/divider';
 import Button from '../../../components/button';
-import { FaCopy, FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
+import {
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaAngleLeft,
+    FaAngleRight,
+    FaCopy,
+    FaEdit,
+    FaEye,
+    FaPlus,
+    FaTrash,
+} from 'react-icons/fa';
 import { useHistory } from 'react-router';
 import Routes from '../../../utils/routes';
-import { toDictionary } from '../../../utils/parsers';
 import { DeleteModal } from '../modal';
+import { deleteSubscriberModal } from '../../../store/subscribers/atom';
 import {
-    deleteSubscriberModal,
-    loadedSubscribersList,
-    subscribers,
-} from '../../../store/subscribers/atom';
-import { getSubscribersQuery } from '../../../store/subscribers/requests';
-import { subscribersSelector } from '../../../store/subscribers/selector';
+    subscribersCountSelector,
+    subscribersSelector,
+} from '../../../store/subscribers/selector';
 import Clipboard from 'react-clipboard.js';
 import Loader from '../../../components/loader';
+import { Pagination } from '../../../utils/types';
 
 const Subscribers: React.FC = () => {
     const history = useHistory();
@@ -27,23 +35,26 @@ const Subscribers: React.FC = () => {
         history.push(route);
     };
 
-    const [subscribersState, setSubscribers] = useRecoilState(subscribers);
-    const [isLoaded, setIsLoaded] = useRecoilState(loadedSubscribersList);
-    const subscribersList = useRecoilValue(subscribersSelector);
+    const paginationLimit = 20;
 
-    useEffect(() => {
-        const getSubscribers = async () => {
-            const subscribers = await getSubscribersQuery();
-            setSubscribers({
-                ...subscribersState,
-                ...toDictionary(subscribers, 'id'),
-            });
-            setIsLoaded(true);
-        };
-        if (!isLoaded) {
-            getSubscribers();
-        }
-    }, [isLoaded]);
+    const [pagination, setPagination] = useState<Pagination>({
+        offset: 0,
+        limit: paginationLimit,
+        page: 1,
+    });
+
+    const setPage = (page: number, pagination: Pagination) => {
+        setPagination({
+            ...pagination,
+            offset: (page - 1) * pagination.limit,
+            page: page,
+        });
+    };
+
+    const subscribersList = useRecoilValueLoadable(
+        subscribersSelector(pagination),
+    );
+    const subscribersCount = useRecoilValueLoadable(subscribersCountSelector);
 
     const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -80,8 +91,8 @@ const Subscribers: React.FC = () => {
                 </div>
 
                 <Divider />
-                {!isLoaded && <Loader />}
-                {isLoaded && (
+                {subscribersList.state === 'loading' && <Loader />}
+                {subscribersList.state === 'hasValue' && (
                     <table className={style.table}>
                         <thead>
                             <tr>
@@ -98,7 +109,7 @@ const Subscribers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {subscribersList.map((val) => {
+                            {subscribersList.contents.map((val) => {
                                 return (
                                     <tr key={val.id}>
                                         <td>{val.name}</td>
@@ -165,6 +176,69 @@ const Subscribers: React.FC = () => {
                             })}
                         </tbody>
                     </table>
+                )}
+                <Divider />
+                {subscribersCount.state === 'hasValue' && (
+                    <div className={style.pagination}>
+                        <Button
+                            handleClick={() => {
+                                setPage(1, pagination);
+                            }}
+                            disabled={pagination.page === 1}
+                        >
+                            <FaAngleDoubleLeft />
+                        </Button>
+                        <Button
+                            handleClick={() =>
+                                setPage(pagination.page - 1, pagination)
+                            }
+                            disabled={pagination.page === 1}
+                        >
+                            <FaAngleLeft />
+                        </Button>
+                        <div className={style.paginationText}>
+                            {pagination.page} of{' '}
+                            {subscribersCount.contents < paginationLimit
+                                ? 1
+                                : Math.floor(
+                                      subscribersCount.contents /
+                                          paginationLimit,
+                                  ) + 1}
+                        </div>
+                        <Button
+                            handleClick={() => {
+                                setPage(pagination.page + 1, pagination);
+                            }}
+                            disabled={
+                                pagination.page * paginationLimit >
+                                subscribersCount.contents
+                            }
+                        >
+                            <FaAngleRight />
+                        </Button>
+                        <Button
+                            handleClick={() => {
+                                setPage(
+                                    Math.floor(
+                                        subscribersCount.contents /
+                                            paginationLimit,
+                                    ) + 1,
+                                    pagination,
+                                );
+                            }}
+                            disabled={
+                                subscribersCount.contents <= paginationLimit ||
+                                pagination.page ===
+                                    Math.floor(
+                                        subscribersCount.contents /
+                                            paginationLimit,
+                                    ) +
+                                        1
+                            }
+                        >
+                            <FaAngleDoubleRight />
+                        </Button>
+                    </div>
                 )}
             </Card>
         </Container>

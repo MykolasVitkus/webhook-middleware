@@ -9,7 +9,6 @@ import Button from '../../../components/button';
 import Routes from '../../../utils/routes';
 import { useHistory } from 'react-router';
 import { useRecoilState, useRecoilValueLoadable } from 'recoil';
-import { Mapper } from '../../../store/mappers/types';
 import 'brace/theme/dracula';
 import 'jsoneditor-react/es/editor.min.css';
 import {
@@ -22,7 +21,7 @@ import {
 } from '../../../store/subscribers/atom';
 import { createSubscriberQuery } from '../../../store/subscribers/requests';
 import { mappersQuerySelector } from '../../../store/mappers/selector';
-import { publishersQuerySelector } from '../../../store/publishers/selector';
+import { publishersSelectorFamily } from '../../../store/publishers/selector';
 import { Publisher } from '../../../store/publishers/types';
 import Loader from '../../../components/loader';
 import ReactDropdown from 'react-dropdown';
@@ -45,7 +44,9 @@ export const SubscribersCreate: React.FC = () => {
         subscribedTo: [],
     });
 
-    const publishersState = useRecoilValueLoadable(publishersQuerySelector);
+    const publishersState = useRecoilValueLoadable(
+        publishersSelectorFamily({ page: 1, offset: 0, limit: 0 }),
+    );
     const mappersState = useRecoilValueLoadable(mappersQuerySelector);
 
     const [subscribersState, setSubscribers] = useRecoilState(subscribers);
