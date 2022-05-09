@@ -40,16 +40,12 @@ const rewriteContentType = (proxyReq, req, res) => {
         proxyReq.write(bodyData);
     };
 
-    if (contentType.includes('application/json')) {
+    if (contentType.includes('application/json') || contentType.includes('application/x-www-form-urlencoded')) {
         writeBody(JSON.stringify(req.body));
     }
 
     if (contentType.includes('text/plain')) {
         writeBody(req.body);
-    }
-
-    if (contentType === 'application/x-www-form-urlencoded') {
-        writeBody(querystring.stringify(req.body));
     }
 };
 

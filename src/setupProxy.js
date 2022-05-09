@@ -19,24 +19,20 @@ module.exports = function (app) {
         if (!req.body || !Object.keys(req.body).length) {
             return;
         }
-
+    
         const contentType = proxyReq.getHeader('Content-Type');
         const writeBody = (bodyData) => {
             proxyReq.setHeader('Content-Type', 'application/json');
             proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
             proxyReq.write(bodyData);
         };
-
-        if (contentType.includes('application/json')) {
+    
+        if (contentType.includes('application/json') || contentType.includes('application/x-www-form-urlencoded')) {
             writeBody(JSON.stringify(req.body));
         }
-
+    
         if (contentType.includes('text/plain')) {
             writeBody(req.body);
-        }
-
-        if (contentType === 'application/x-www-form-urlencoded') {
-            writeBody(querystring.stringify(req.body));
         }
     };
 
