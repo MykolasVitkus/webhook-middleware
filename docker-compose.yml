@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: mongodb://root:root@mongo:27017/admin
+    volumes:
+      - ./webhook-middleware-client:/usr/bin/app:rw,cached
+      - ./webhook-middleware-server:/usr/bin/server:rw,cached
+    networks:
+      - dev_net
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:4.4
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - dev_net
+
+networks:
+  dev_net:
+    external: true

@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+}
+
+code {
+    font-family: Monaco, Consolas, 'Courier New', monospace;
+}
+
+div.jsoneditor-mode-code {
+    height: 100%;
+}
+
+.jsoneditor {
+    border: thin solid #414755 !important;
+}
+
+.DayPickerInput-OverlayWrapper {
+    background-color: red;
+}
+
+.Dropdown-option {
+    height: 32px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-left: -6px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: all 0.1s;
+}
+
+.Dropdown-option:hover {
+    background-color: #4d5568;
+}
+
+.Dropdown-option.is-selected {
+    background-color: #4d5568;
+}

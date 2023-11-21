@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+    server:
+        image: node:latest
+        entrypoint: 'tail -f /dev/null'
+        working_dir: /app
+        environment:
+            DATABASE_URL: mongodb://root:root@mongo:27017/admin
+        volumes:
+            - ./:/app:rw,cached
+        networks:
+            - dev_net
+
+    mongo:
+        image: mongo:4.4
+        ports:
+            - '27017:27017'
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+        networks:
+            - dev_net
+
+networks:
+    dev_net:
+        external: true

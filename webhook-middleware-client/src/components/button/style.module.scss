@@ -1,0 +1,18 @@
+@import '../../globals.module.scss';
+
+.button {
+    padding-left: 18px;
+    padding-right: 18px;
+    height: 32px;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid $navColor;
+    border-radius: 2px;
+    outline: none;
+    color: $primText;
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+}

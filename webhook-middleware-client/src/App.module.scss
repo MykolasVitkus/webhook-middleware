@@ -1,0 +1,23 @@
+@import 'globals.module.scss';
+
+
+.App {
+  background-color: $backgroundColor;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  color: $primText;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 0px;
+  color: $secText;
+}

@@ -1,0 +1,26 @@
+import { NotFoundException } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { Test } from '@nestjs/testing';
+import { PublishersModule } from '../publishers/publishers.module';
+import { WebhooksController } from './webhooks.controller';
+
+describe('WebhooksController', () => {
+    let webhooksController: WebhooksController;
+
+    beforeEach(async () => {
+        const moduleRef = await Test.createTestingModule({
+            controllers: [WebhooksController],
+            imports: [EventEmitterModule.forRoot(), PublishersModule]
+        }).compile();
+
+        webhooksController = moduleRef.get<WebhooksController>(WebhooksController);
+    });
+
+    it('should receive a webhook and emit an event', async () => {
+        try {
+            await webhooksController.create('invalid', { data: 'payload' });
+        } catch (e) {
+            expect(e).toBeInstanceOf(NotFoundException);
+        }
+    });
+});

@@ -1,0 +1,11 @@
+mongodb:
+  password: root
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    accessMode: "ReadWriteOnce"
+    size: "1Gi"
+
+server:
+  secret: very-secret
+

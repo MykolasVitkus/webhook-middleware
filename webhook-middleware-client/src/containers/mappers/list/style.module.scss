@@ -1,0 +1,45 @@
+.table {
+    width: 100%;
+}
+
+.tdLeftAligned {
+    text-align: start;
+}
+
+.thLeftAligned {
+    text-align: start;
+}
+
+.tdRightAligned {
+    text-align: end;
+}
+
+.thRightAligned {
+    text-align: end;
+}
+
+.iconMargin {
+    margin-right: 6px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginationText {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}

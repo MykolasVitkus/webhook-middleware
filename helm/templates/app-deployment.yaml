@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: app
+  labels:
+    app.kubernetes.io/name: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - image: mykolasv/webhook-middleware-app:latest
+          name: app
+          env:
+            - name: SERVER_URL
+              value: http://localhost:3001
+          ports:
+            - containerPort: 3000
+              hostPort: 3000
+              protocol: TCP
+          resources: {}
+        - image: mykolasv/webhook-middleware-server:latest
+          name: server
+          env:
+            - name: DATABASE_URL
+              value: mongodb://root:root@mongo-service:27017/admin
+            - name: JWT_SECRET
+              value: {{ .Values.server.secret }}
+          ports:
+            - containerPort: 3001
+              hostPort: 3001
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
